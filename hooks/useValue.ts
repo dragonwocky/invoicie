@@ -1,0 +1,59 @@
+import { useFormContext } from "react-hook-form";
+import { useClientValue } from "@/hooks/useClientValue.ts";
+
+export const useValue = <T = string>(clientKey: string): T => {
+  const clientValue = useClientValue(clientKey, "");
+  try {
+    const { watch } = useFormContext(),
+      value = watch(clientKey, clientValue);
+    return value;
+  } catch {
+    return clientValue as T;
+  }
+};
+
+export const useInvoice = (): Invoice => {
+  const invoicedTo: InvoicedTo = {
+      toEmail: useValue("toEmail"),
+      toPhone: useValue("toPhone"),
+      toName: useValue("toName"),
+      toDepartment: useValue("toDepartment"),
+      toLogo: useValue("toLogo"),
+      toAddress: useValue("toAddress"),
+      toCity: useValue("toCity"),
+      toState: useValue("toState"),
+      toCountry: useValue("toCountry"),
+      toPostcode: useValue("toPostcode"),
+    },
+    invoicedFrom: InvoicedFrom = {
+      fromEmail: useValue("fromEmail"),
+      fromPhone: useValue("fromPhone"),
+      fromName: useValue("fromName"),
+      fromLogo: useValue("fromLogo"),
+      fromAddress: useValue("fromAddress"),
+      fromCity: useValue("fromCity"),
+      fromState: useValue("fromState"),
+      fromCountry: useValue("fromCountry"),
+      fromPostcode: useValue("fromPostcode"),
+      fromABN: useValue("fromABN"),
+    },
+    paymentDetails: PaymentDetails = {
+      accountName: useValue("accountName"),
+      accountNumber: useValue("accountNumber"),
+      branchNumber: useValue("branchNumber"),
+      invoiceNumber: useValue("invoiceNumber"),
+      issueDate: useValue("issueDate"),
+      dueDate: useValue("dueDate"),
+      currency: useValue("currency"),
+      discount: useValue("discount"),
+      note: useValue("note"),
+    },
+    invoiceItems = useValue<Item[]>("items");
+
+  return {
+    invoicedTo,
+    invoicedFrom,
+    paymentDetails,
+    invoiceItems,
+  };
+};

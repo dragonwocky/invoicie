@@ -1,59 +1,50 @@
-interface CompanyDetails {
-  email?: string | null;
-  companyName?: string | null;
-  companyAddress?: string | null;
-  companyCity?: string | null;
-  companyState?: string | null;
-  companyCountry?: string | null;
-  companyLogo?: string | null;
-  companyTaxId?: string | null;
-  companyZip?: string | null;
+interface InvoicedFrom {
+  fromName?: string;
+  fromEmail?: string;
+  fromPhone?: string;
+  fromLogo?: string;
+  fromAddress?: string;
+  fromCity?: string;
+  fromState?: string;
+  fromCountry?: string;
+  fromPostcode?: string;
+  fromABN?: string;
 }
 
-interface YourDetails {
-  yourEmail?: string | null;
-  yourName?: string | null;
-  yourAddress?: string | null;
-  yourCity?: string | null;
-  yourState?: string | null;
-  yourCountry?: string | null;
-  yourLogo?: string | null;
-  yourTaxId?: string | null;
-  yourZip?: string | null;
-}
-
-interface InvoiceItemDetails {
-  note?: string | null;
-  discount?: string | null;
-  taxRate?: string | null;
-  items: Item[];
-  currency?: string;
+interface InvoicedTo {
+  toName?: string;
+  toEmail?: string;
+  toPhone?: string;
+  toDepartment?: string;
+  toLogo?: string;
+  toAddress?: string;
+  toCity?: string;
+  toState?: string;
+  toCountry?: string;
+  toPostcode?: string;
 }
 
 interface Item {
-  itemDescription: string;
-  qty?: number;
-  amount?: number;
-}
-
-interface InvoiceTerms {
-  invoiceNumber?: string | null;
-  issueDate?: string | null;
-  dueDate?: string | null;
+  description: string;
+  quantity?: number;
+  price?: number;
 }
 
 interface PaymentDetails {
-  bankName?: string | null;
-  accountNumber?: string | null;
-  accountName?: string | null;
-  routingCode?: string | null;
-  swiftCode?: string | null;
-  ifscCode?: string | null;
+  accountName?: string;
+  accountNumber?: string;
+  branchNumber?: string;
+  invoiceNumber?: string;
+  issueDate?: string;
+  dueDate?: string;
   currency?: string;
+  discount?: string;
+  note?: string;
 }
 
-type InvoiceData = PaymentDetails &
-  InvoiceTerms &
-  InvoiceItemDetails &
-  YourDetails &
-  CompanyDetails;
+interface Invoice {
+  invoicedTo: InvoicedTo;
+  invoicedFrom: InvoicedFrom;
+  invoiceItems: Item[];
+  paymentDetails: PaymentDetails;
+}
