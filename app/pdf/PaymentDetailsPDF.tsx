@@ -3,9 +3,9 @@ import { Image, Text, View } from "@react-pdf/renderer";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { format } from "date-fns";
 import { getCurrency } from "@/components/CurrencyInput.tsx";
-import { calculateTotalAmount } from "@/app/form/paymentDetails/PaymentDetailsPreview.tsx";
+import { calculateTotalAmount } from "@/app/preview/PaymentDetailsPreview.tsx";
 import { useValue } from "@/hooks/useValue.ts";
-import { formatCurrencyValue } from "@/app/form/invoiceItems/InvoiceItemsPreview.tsx";
+import { formatCurrencyValue } from "@/app/preview/InvoiceItemsPreview.tsx";
 
 const PaymentTermsPDF: React.FC<PaymentDetails> = (
   { invoiceNumber, issueDate, dueDate },
@@ -137,7 +137,9 @@ const PaymentDetailsPDF: React.FC<PaymentDetails> = (
               Account Number
             </Text>
             {accountNumber && (
-              <Text style={{ ...pdfStyles.value, flex: 1 }}>{accountNumber}</Text>
+              <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                {accountNumber}
+              </Text>
             )}
           </View>
           <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>

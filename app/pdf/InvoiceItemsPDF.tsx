@@ -4,7 +4,7 @@ import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import {
   addCommasToNumber,
   formatCurrencyValue,
-} from "@/app/form/invoiceItems/InvoiceItemsPreview.tsx";
+} from "@/app/preview/InvoiceItemsPreview.tsx";
 
 export const InvoiceItemsPDF: React.FC<{ items: Item[] }> = ({ items }) => (
   <View style={{ paddingTop: 16, paddingHorizontal: 32 }}>

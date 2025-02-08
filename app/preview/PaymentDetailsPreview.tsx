@@ -10,7 +10,7 @@ import {
 } from "@/components/Typography.tsx";
 import { format } from "date-fns";
 import { useValue } from "@/hooks/useValue.ts";
-import { formatCurrencyValue } from "@/app/form/invoiceItems/InvoiceItemsPreview.tsx";
+import { formatCurrencyValue } from "@/app/preview/InvoiceItemsPreview.tsx";
 
 const calculateTotalAmount = (items: Item[]): number =>
   Array.isArray(items)
@@ -137,4 +137,4 @@ const PaymentDetailsPreview: Preview = (
   );
 };
 
-export { PaymentDetailsPreview, PaymentTermsPreview, calculateTotalAmount };
+export { calculateTotalAmount, PaymentDetailsPreview, PaymentTermsPreview };

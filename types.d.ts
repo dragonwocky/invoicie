@@ -24,6 +24,20 @@ interface InvoicedTo {
   toPostcode?: string;
 }
 
+interface Party {
+  title?: string;
+  name?: string;
+  description?: string;
+  email?: string;
+  phone?: string;
+  logo?: string;
+  address?: string;
+  city?: string;
+  state?: string;
+  country?: string;
+  postcode?: string;
+}
+
 interface Item {
   description: string;
   quantity?: number;
