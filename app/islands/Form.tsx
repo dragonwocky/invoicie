@@ -10,7 +10,7 @@ import * as Payment from "@/app/islands/Payment.tsx";
 import * as To from "@/app/islands/To.tsx";
 import { setClientValue } from "@/hooks/useClientValue.ts";
 import { usePage, usePageTitle } from "@/hooks/usePage.ts";
-import { version } from "@/package.json" with { type: "json" };
+import pkg from "@/package.json" with { type: "json" };
 
 const PageBack = ({ fromPage }: { fromPage: number }) => {
     const pageTitle = usePageTitle(fromPage - 1);
@@ -75,7 +75,7 @@ const Form = () => {
         <div className="flex gap-2 items-center">
           <p className="font-semibold">Invoicie</p>
           <p className="text-primary rounded-md p-1.5 bg-neutral-50">
-            v{version}
+            v{pkg.version}
           </p>
         </div>
         <p className="pt-16 text-2xl font-semibold pb-12">{usePageTitle()}</p>
