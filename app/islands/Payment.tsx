@@ -1,6 +1,6 @@
 "use client";
 
-import { Image, Text, View } from "@react-pdf/renderer";
+import { Image, Link, Text, View } from "@react-pdf/renderer";
 import { format } from "date-fns";
 import React from "react";
 
@@ -50,6 +50,11 @@ const Form = () => (
       clientKey="discount"
       percent
     />
+    <TextInput
+      label="URL"
+      placeholder="https://checkout.stripe.com/..."
+      clientKey="paymentUrl"
+    />
     <TextInput label="Note" placeholder="Add a note..." clientKey="note" />
   </>
 );
@@ -58,8 +63,9 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
   accountName,
   accountNumber,
   branchNumber,
-  note,
+  paymentUrl,
   discount,
+  note,
   onClick,
 }) => {
   const currency = useCurrency(),
@@ -69,7 +75,7 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
   return (
     <div className="group cursor-pointer relative" onClick={onClick}>
       <Frame />
-      <Columns className="pb-4 border-b border-dashed">
+      <Columns className="pb-4 mb-4 border-b border-dashed">
         <div className="pt-3 px-8">
           {note && (
             <>
@@ -104,7 +110,15 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
           </Columns>
         </div>
       </Columns>
-      <Columns className="py-4">
+      {paymentUrl && (
+        <Columns className="grid-cols-4 pb-3">
+          <Title className="pl-8 mb-0 mt-px">Pay Online</Title>
+          <Value className="pr-8 col-span-3 underline truncate">
+            <a href={paymentUrl} target="_blank">{paymentUrl}</a>
+          </Value>
+        </Columns>
+      )}
+      <Columns>
         <div className="px-8">
           <Title>Payment Details</Title>
           <Columns className="mb-1">
@@ -143,13 +157,14 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
   );
 };
 
-const PDF: React.FC<PaymentDetails & { currencyDataUri: string }> = ({
+const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
+  flagDataUri,
   accountName,
   accountNumber,
   branchNumber,
-  note,
+  paymentUrl,
   discount,
-  currencyDataUri,
+  note,
 }) => {
   const currency = useCurrency(),
     subtotal = calculateTotalAmount(useValue("items")),
@@ -163,6 +178,7 @@ const PDF: React.FC<PaymentDetails & { currencyDataUri: string }> = ({
           flexDirection: "row",
           borderBottom: pdfBorder,
           paddingBottom: 16,
+          marginBottom: 16,
         }}
       >
         <View style={{ flex: 1, paddingTop: 12, paddingHorizontal: 32 }}>
@@ -223,48 +239,76 @@ const PDF: React.FC<PaymentDetails & { currencyDataUri: string }> = ({
           </View>
         </View>
       </View>
-      <View
-        style={{
-          display: "flex",
-          flexDirection: "row",
-          paddingVertical: 16,
-        }}
-      >
+      {paymentUrl && (
+        <View
+          style={{
+            ...pdfStyles.columns,
+            justifyContent: "center",
+            paddingHorizontal: 32,
+            paddingBottom: 12,
+          }}
+        >
+          <Text
+            style={{
+              ...pdfStyles.title,
+              marginBottom: 0,
+              marginTop: 1,
+              width: 148,
+            }}
+          >
+            Pay Online
+          </Text>
+          <Link
+            src={paymentUrl}
+            style={{
+              ...pdfStyles.value,
+              textDecoration: "underline",
+              width: "100%"
+            }}
+          >
+            {paymentUrl.length > 64
+              ? paymentUrl.slice(0, 64) + "..."
+              : paymentUrl}
+          </Link>
+        </View>
+      )}
+      <View style={{ display: "flex", flexDirection: "row" }}>
         <View style={{ flex: 1, paddingHorizontal: 32 }}>
           <Text style={pdfStyles.title}>Payment Details</Text>
-          <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-            <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
-              Account Name
-            </Text>
-            {accountName && (
-              <Text style={{ ...pdfStyles.value, flex: 1 }}>{accountName}</Text>
-            )}
-          </View>
-          <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-            <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
-              Account Number
-            </Text>
-            {accountNumber && (
+          {accountName && (
+            <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+              <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                Account Name
+              </Text>
+              <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                {accountName}
+              </Text>
+            </View>
+          )}
+          {accountNumber && (
+            <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+              <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                Account Number
+              </Text>
               <Text style={{ ...pdfStyles.value, flex: 1 }}>
                 {accountNumber}
               </Text>
-            )}
-          </View>
-          <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-            <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>BSB</Text>
-            {branchNumber && (
+            </View>
+          )}
+          {branchNumber && (
+            <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+              <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>BSB</Text>
               <Text style={{ ...pdfStyles.value, flex: 1 }}>
                 {branchNumber}
               </Text>
-            )}
-          </View>
+            </View>
+          )}
         </View>
         <View style={{ flex: 1, paddingHorizontal: 32 }}>
           <Text style={pdfStyles.title}>Payable In</Text>
-
           <View style={pdfStyles.columns}>
             <Image
-              src={currencyDataUri}
+              src={flagDataUri}
               style={{
                 width: 32,
                 height: 32,

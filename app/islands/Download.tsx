@@ -34,7 +34,7 @@ Font.register({
   ].map((src, i) => ({ src, fontWeight: i * 100 + 100 })),
 });
 
-const PDF: React.FC<{ currencyDataUri: string }> = ({ currencyDataUri }) => {
+const PDF: React.FC<{ flagDataUri: string }> = ({ flagDataUri }) => {
   const {
     invoicedTo,
     invoicedFrom,
@@ -55,14 +55,15 @@ const PDF: React.FC<{ currencyDataUri: string }> = ({ currencyDataUri }) => {
           <To.PDF {...invoicedTo} />
         </View>
         <Items.PDF items={invoiceItems} />
-        <Payment.PDF currencyDataUri={currencyDataUri} {...paymentDetails} />
+        <Payment.PDF flagDataUri={flagDataUri} {...paymentDetails} />
       </Page>
     </Document>
   );
 };
 
 const Download = () => {
-  const invoiceNumber = useValue("invoiceNumber"),
+  const flag = useFlag(),
+    invoiceNumber = useValue("invoiceNumber"),
     [status, setStatus] = useState<
       "downloaded" | "downloading" | "not-downloaded"
     >("not-downloaded"),
@@ -98,8 +99,7 @@ const Download = () => {
         onClick={async () => {
           try {
             setStatus("downloading");
-            const currencyDataUri = await useFlag(),
-              blob = await pdf(<PDF {...{ currencyDataUri }} />).toBlob();
+            const blob = await pdf(<PDF flagDataUri={await flag} />).toBlob();
             saveAs(blob, `${invoiceNumber || "invoice"}.pdf`);
             setStatus("downloaded");
           } catch (e) {

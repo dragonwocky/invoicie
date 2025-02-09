@@ -41,6 +41,7 @@ const useInvoice = (): Invoice => {
       accountNumber: useValue("accountNumber"),
       branchNumber: useValue("branchNumber"),
       invoiceNumber: useValue("invoiceNumber"),
+      paymentUrl: useValue("paymentUrl"),
       issueDate: useValue("issueDate"),
       dueDate: useValue("dueDate"),
       currency: useValue("currency"),

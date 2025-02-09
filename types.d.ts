@@ -53,6 +53,7 @@ interface PaymentDetails {
   dueDate?: string;
   currency?: string;
   discount?: string;
+  paymentUrl?: string;
   note?: string;
 }
 

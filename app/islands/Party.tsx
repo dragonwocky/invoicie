@@ -103,14 +103,20 @@ const PDF: React.FC<Party> = ({
         <Text style={pdfStyles.value}>{city}, {state} {postcode}</Text>}
       {country && <Text style={pdfStyles.value}>{country}</Text>}
     </View>
-    <View style={{ ...pdfStyles.columns, marginBottom: 1 }}>
-      <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Phone</Text>
-      {phone && <Text style={{ ...pdfStyles.value, flex: 1 }}>{phone}</Text>}
-    </View>
-    <View style={pdfStyles.columns}>
-      <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Email</Text>
-      {email && <Text style={{ ...pdfStyles.value, flex: 1 }}>{email}</Text>}
-    </View>
+    {phone &&
+      (
+        <View style={{ ...pdfStyles.columns, marginBottom: 1 }}>
+          <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Phone</Text>
+          <Text style={{ ...pdfStyles.value, flex: 1 }}>{phone}</Text>
+        </View>
+      )}
+    {email &&
+      (
+        <View style={pdfStyles.columns}>
+          <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Email</Text>
+          <Text style={{ ...pdfStyles.value, flex: 1 }}>{email}</Text>
+        </View>
+      )}
   </View>
 );
 
