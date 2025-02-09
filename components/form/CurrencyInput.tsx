@@ -1,11 +1,9 @@
 "use client";
 
-import { AU, EU, type FlagComponent, US } from "country-flag-icons/react/1x1";
+import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
-import { CheckCircle2 } from "lucide-react";
 
-import { useValue } from "@/hooks/useValue.ts";
 import {
   Command,
   CommandEmpty,
@@ -19,64 +17,19 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
-import { svgToDataUri } from "@/app/utils.ts";
+import { currencies, useCurrency } from "@/hooks/useCurrency.ts";
 
 type CurrencyInputProps = {
   label?: string;
   clientKey: string;
 };
 
-const getFlag = async (countryCode: string) => {
-  const flags = "https://catamphetamine.gitlab.io/country-flag-icons/1x1",
-    flag = await fetch(`${flags}/${countryCode}.svg`);
-  return await svgToDataUri(await flag.text()) || "";
-};
-
-const currencies: {
-    name: string;
-    country: string;
-    symbol: string;
-    shortcode: string;
-    iconDataUri: string;
-    Icon: FlagComponent;
-  }[] = [
-    {
-      name: "Australian Dollar",
-      country: "Australia",
-      symbol: "$",
-      shortcode: "AUD",
-      iconDataUri: await getFlag("AU"),
-      Icon: AU,
-    },
-    {
-      name: "United States Dollar",
-      country: "United States",
-      symbol: "$",
-      shortcode: "USD",
-      iconDataUri: await getFlag("US"),
-      Icon: US,
-    },
-    {
-      name: "Euro",
-      country: "European Union",
-      symbol: "€",
-      shortcode: "EUR",
-      iconDataUri: await getFlag("EU"),
-      Icon: EU,
-    },
-  ],
-  getCurrency = (shortcode = useValue("currency")) => {
-    return currencies.find((currency) =>
-      currency.shortcode.toLowerCase() === shortcode?.toLowerCase()
-    ) || currencies[0];
-  };
-
 const CurrencyInput = ({ label, clientKey }: CurrencyInputProps) => {
   const [open, setOpen] = useState(false);
   return (
     <Controller
       render={({ field: { onChange, value } }) => {
-        const selected = getCurrency(value);
+        const selected = useCurrency(value);
         return (
           <Popover onOpenChange={setOpen} open={open}>
             <PopoverTrigger className="flex w-full mb-6 pb-2 border-b-2 border-dashed transition-colors focus-within:border-primary">
@@ -135,4 +88,4 @@ const CurrencyInput = ({ label, clientKey }: CurrencyInputProps) => {
   );
 };
 
-export { CurrencyInput, getCurrency };
+export { CurrencyInput };

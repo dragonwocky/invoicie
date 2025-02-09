@@ -1,14 +1,5 @@
 "use client";
 
-import { InvoiceItemsPDF } from "@/app/pdf/InvoiceItemsPDF.tsx";
-import {
-  PaymentDetailsPDF,
-  PaymentTermsPDF,
-} from "@/app/pdf/PaymentDetailsPDF.tsx";
-import * as Party from "@/components/Party.tsx";
-import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
-import { Button } from "@/components/ui/button.tsx";
-import { useInvoice, useValue } from "@/hooks/useValue.ts";
 import { Document, Font, Page, pdf, View } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
 import {
@@ -17,6 +8,16 @@ import {
   LoaderIcon,
 } from "lucide-react";
 import { useEffect, useState } from "react";
+
+import * as From from "@/app/islands/From.tsx";
+import * as Items from "@/app/islands/Items.tsx";
+import * as Payment from "@/app/islands/Payment.tsx";
+import * as Reference from "@/app/islands/Reference.tsx";
+import * as To from "@/app/islands/To.tsx";
+import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
+import { Button } from "@/components/ui/button.tsx";
+import { useFlag } from "@/hooks/useCurrency.ts";
+import { useInvoice, useValue } from "@/hooks/useValue.ts";
 
 Font.register({
   family: "Geist",
@@ -33,7 +34,7 @@ Font.register({
   ].map((src, i) => ({ src, fontWeight: i * 100 + 100 })),
 });
 
-const PDF = () => {
+const PDF: React.FC<{ currencyDataUri: string }> = ({ currencyDataUri }) => {
   const {
     invoicedTo,
     invoicedFrom,
@@ -43,45 +44,18 @@ const PDF = () => {
   return (
     <Document>
       <Page size="A4" style={{ fontFamily: "Geist" }}>
-        <PaymentTermsPDF {...paymentDetails} />
+        <Reference.PDF {...paymentDetails} />
         <View
-          style={{ ...pdfStyles.columns, borderBottom: pdfBorder }}
+          style={{
+            ...pdfStyles.columns,
+            borderBottom: pdfBorder,
+          }}
         >
-          <View style={{ flex: 1, borderRight: pdfBorder }}>
-            <Party.PDF
-              title="From"
-              name={invoicedFrom.fromName}
-              description={invoicedFrom.fromABN
-                ? `ABN ${invoicedFrom.fromABN}`
-                : ""}
-              email={invoicedFrom.fromEmail}
-              phone={invoicedFrom.fromPhone}
-              logo={invoicedFrom.fromLogo}
-              address={invoicedFrom.fromAddress}
-              city={invoicedFrom.fromCity}
-              state={invoicedFrom.fromState}
-              country={invoicedFrom.fromCountry}
-              postcode={invoicedFrom.fromPostcode}
-            />
-          </View>
-          <View style={{ flex: 1 }}>
-            <Party.PDF
-              title="To"
-              name={invoicedTo.toName}
-              description={invoicedTo.toDepartment}
-              email={invoicedTo.toEmail}
-              phone={invoicedTo.toPhone}
-              logo={invoicedTo.toLogo}
-              address={invoicedTo.toAddress}
-              city={invoicedTo.toCity}
-              state={invoicedTo.toState}
-              country={invoicedTo.toCountry}
-              postcode={invoicedTo.toPostcode}
-            />
-          </View>
+          <From.PDF {...invoicedFrom} />
+          <To.PDF {...invoicedTo} />
         </View>
-        <InvoiceItemsPDF items={invoiceItems} />
-        <PaymentDetailsPDF {...paymentDetails} />
+        <Items.PDF items={invoiceItems} />
+        <Payment.PDF currencyDataUri={currencyDataUri} {...paymentDetails} />
       </Page>
     </Document>
   );
@@ -124,7 +98,8 @@ const Download = () => {
         onClick={async () => {
           try {
             setStatus("downloading");
-            const blob = await pdf(<PDF />).toBlob();
+            const currencyDataUri = await useFlag(),
+              blob = await pdf(<PDF {...{ currencyDataUri }} />).toBlob();
             saveAs(blob, `${invoiceNumber || "invoice"}.pdf`);
             setStatus("downloaded");
           } catch (e) {

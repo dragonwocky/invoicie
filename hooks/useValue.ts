@@ -1,18 +1,17 @@
 import { useFormContext } from "react-hook-form";
 import { useClientValue } from "@/hooks/useClientValue.ts";
 
-export const useValue = <T = string>(clientKey: string): T => {
-  const clientValue = useClientValue(clientKey, "");
+const useValue = <T = string>(clientKey: string): T => {
+  const ctx = useFormContext(),
+    clientValue = useClientValue(clientKey, "");
   try {
-    const { watch } = useFormContext(),
-      value = watch(clientKey, clientValue);
-    return value;
+    return ctx.watch(clientKey, clientValue);
   } catch {
     return clientValue as T;
   }
 };
 
-export const useInvoice = (): Invoice => {
+const useInvoice = (): Invoice => {
   const invoicedTo: InvoicedTo = {
       toEmail: useValue("toEmail"),
       toPhone: useValue("toPhone"),
@@ -57,3 +56,5 @@ export const useInvoice = (): Invoice => {
     invoiceItems,
   };
 };
+
+export { useInvoice, useValue };

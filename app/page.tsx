@@ -1,7 +1,8 @@
-import { App } from "@/app/App.tsx";
 import type { Metadata, Viewport } from "next";
 import { Geist } from "next/font/google";
-import "./globals.css";
+
+import { App } from "@/app/App.tsx";
+import "@/app/globals.css";
 
 const metadata: Metadata = { title: "Invoicie" },
   viewport: Viewport = { width: "device-width", initialScale: 1 };

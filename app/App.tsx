@@ -3,8 +3,8 @@
 import { useEffect, useState } from "react";
 import { FormProvider, useForm } from "react-hook-form";
 
-import { Form } from "@/app/form/Form.tsx";
-import { Preview } from "@/app/preview/Preview.tsx";
+import { Form } from "@/app/islands/Form.tsx";
+import { Preview } from "@/app/islands/Preview.tsx";
 
 const App = () => {
   const methods = useForm(),

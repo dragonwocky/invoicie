@@ -1,7 +1,8 @@
 "use client";
 
-import { cn } from "@/app/utils.ts";
 import { type ComponentProps, forwardRef } from "react";
+
+import { cn } from "@/app/utils.ts";
 
 const Input = forwardRef<
   HTMLInputElement,

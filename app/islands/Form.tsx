@@ -1,15 +1,16 @@
 "use client";
 
-import { InvoicedFromForm } from "@/app/form/InvoicedFromForm.tsx";
-import { InvoicedToForm } from "@/app/form/InvoicedToForm.tsx";
-import { InvoiceItemsForm } from "@/app/form/InvoiceItemsForm.tsx";
-import { PaymentDetailsForm } from "@/app/form/PaymentDetailsForm.tsx";
-import { Download } from "@/app/pdf/Download.tsx";
-import { version } from "@/package.json" with { type: "json" };
-import { setClientValue } from "@/hooks/useClientValue.ts";
 import { MoveLeft, MoveRight } from "lucide-react";
 import { Controller } from "react-hook-form";
+
+import { Download } from "@/app/islands/Download.tsx";
+import * as From from "@/app/islands/From.tsx";
+import * as Items from "@/app/islands/Items.tsx";
+import * as Payment from "@/app/islands/Payment.tsx";
+import * as To from "@/app/islands/To.tsx";
+import { setClientValue } from "@/hooks/useClientValue.ts";
 import { usePage, usePageTitle } from "@/hooks/usePage.ts";
+import { version } from "@/package.json" with { type: "json" };
 
 const PageBack = ({ fromPage }: { fromPage: number }) => {
     const pageTitle = usePageTitle(fromPage - 1);
@@ -79,10 +80,10 @@ const Form = () => {
         </div>
         <p className="pt-16 text-2xl font-semibold pb-12">{usePageTitle()}</p>
         {[
-          <InvoicedFromForm />,
-          <InvoicedToForm />,
-          <PaymentDetailsForm />,
-          <InvoiceItemsForm />,
+          <To.Form />,
+          <From.Form />,
+          <Payment.Form />,
+          <Items.Form />,
           <Download />,
         ][page]}
       </div>
