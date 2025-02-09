@@ -118,7 +118,7 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
           </Value>
         </Columns>
       )}
-      <Columns>
+      <Columns className="pb-4">
         <div className="px-8">
           <Title>Payment Details</Title>
           <Columns className="mb-1">
@@ -273,7 +273,7 @@ const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
         </View>
       )}
       <View style={{ display: "flex", flexDirection: "row" }}>
-        <View style={{ flex: 1, paddingHorizontal: 32 }}>
+        <View style={{ flex: 1, paddingHorizontal: 32, paddingBottom: 16 }}>
           <Text style={pdfStyles.title}>Payment Details</Text>
           {accountName && (
             <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>

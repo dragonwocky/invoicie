@@ -70,7 +70,7 @@ const PageBack = ({ fromPage }: { fromPage: number }) => {
 const Form = () => {
   const page = usePage();
   return (
-    <div className="max-w-lg max-h-screen min-h-screen w-full h-full overflow-x-hidden overflow-y-auto p-4 md:p-12 border-r border-dashed flex flex-col justify-between">
+    <div className="max-w-lg max-h-screen min-h-screen w-full h-full overflow-x-hidden md:overflow-y-auto p-4 md:p-12 border-r border-dashed flex flex-col justify-between">
       <div className="text-sm ">
         <div className="flex gap-2 items-center">
           <p className="font-semibold">Invoicie</p>
@@ -80,8 +80,8 @@ const Form = () => {
         </div>
         <p className="pt-16 text-2xl font-semibold pb-12">{usePageTitle()}</p>
         {[
-          <To.Form />,
           <From.Form />,
+          <To.Form />,
           <Payment.Form />,
           <Items.Form />,
           <Download />,
