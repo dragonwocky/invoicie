@@ -11,6 +11,7 @@ import * as To from "@/app/islands/To.tsx";
 import { setClientValue } from "@/hooks/useClientValue.ts";
 import { usePage, usePageTitle } from "@/hooks/usePage.ts";
 import pkg from "@/package.json" with { type: "json" };
+import { Invoicie } from "@/components/Invoicie.tsx";
 
 const PageBack = ({ fromPage }: { fromPage: number }) => {
     const pageTitle = usePageTitle(fromPage - 1);
@@ -73,10 +74,11 @@ const Form = () => {
     <div className="w-full max-w-lg md:max-h-screen md:h-screen md:overflow-x-hidden p-4 md:p-12 border-r border-dashed flex flex-col justify-between">
       <div className="text-sm ">
         <div className="flex gap-2 items-center">
-          <p className="font-semibold">Invoicie</p>
-          <p className="text-primary rounded-md p-1.5 bg-neutral-50">
-            v{pkg.version}
-          </p>
+          <Invoicie className="h-12 w-12" />
+          <div>
+            <p className="font-semibold">Invoicie</p>
+            <p className="text-xs">v{pkg.version}</p>
+          </div>
         </div>
         <p className="pt-16 text-2xl font-semibold pb-12">{usePageTitle()}</p>
         {[
