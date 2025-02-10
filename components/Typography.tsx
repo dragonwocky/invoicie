@@ -53,13 +53,7 @@ const pdfStyles = StyleSheet.create({
       display: "flex",
       alignItems: "center",
       flexDirection: "row",
-    },
-    image: {
-      width: 40,
-      height: 40,
-      borderRadius: "100%",
-      marginRight: 12,
-    },
+    }
   }),
   pdfBorder = `1px dashed hsl(240 5.9% 90%)`;
 

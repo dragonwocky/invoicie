@@ -3,6 +3,7 @@ interface InvoicedFrom {
   fromEmail?: string;
   fromPhone?: string;
   fromLogo?: string;
+  fromLogoShape?: string;
   fromAddress?: string;
   fromCity?: string;
   fromState?: string;
@@ -17,6 +18,7 @@ interface InvoicedTo {
   toPhone?: string;
   toDepartment?: string;
   toLogo?: string;
+  toLogoShape?: string;
   toAddress?: string;
   toCity?: string;
   toState?: string;
@@ -31,6 +33,7 @@ interface Party {
   email?: string;
   phone?: string;
   logo?: string;
+  logoShape?: string;
   address?: string;
   city?: string;
   state?: string;

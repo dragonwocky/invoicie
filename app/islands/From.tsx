@@ -6,6 +6,7 @@ import * as Party from "@/app/islands/Party.tsx";
 import { ImageInput } from "@/components/form/ImageInput.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import { pdfBorder } from "@/components/Typography.tsx";
+import { Switch } from "@/components/form/Switch.tsx";
 
 const Form = () => (
   <>
@@ -40,6 +41,7 @@ const Preview: React.FC<InvoicedFrom & { onClick: () => void }> = ({
   fromEmail,
   fromPhone,
   fromLogo,
+  fromLogoShape,
   fromAddress,
   fromCity,
   fromState,
@@ -55,6 +57,7 @@ const Preview: React.FC<InvoicedFrom & { onClick: () => void }> = ({
       email={fromEmail}
       phone={fromPhone}
       logo={fromLogo}
+      logoShape={fromLogoShape}
       address={fromAddress}
       city={fromCity}
       state={fromState}
@@ -71,6 +74,7 @@ const PDF: React.FC<InvoicedFrom> = ({
   fromEmail,
   fromPhone,
   fromLogo,
+  fromLogoShape,
   fromAddress,
   fromCity,
   fromState,
@@ -85,6 +89,7 @@ const PDF: React.FC<InvoicedFrom> = ({
       email={fromEmail}
       phone={fromPhone}
       logo={fromLogo}
+      logoShape={fromLogoShape}
       address={fromAddress}
       city={fromCity}
       state={fromState}

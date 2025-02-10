@@ -39,6 +39,7 @@ const Preview = ({
   toEmail,
   toPhone,
   toLogo,
+  toLogoShape,
   toAddress,
   toCity,
   toState,
@@ -53,6 +54,7 @@ const Preview = ({
     email={toEmail}
     phone={toPhone}
     logo={toLogo}
+    logoShape={toLogoShape}
     address={toAddress}
     city={toCity}
     state={toState}
@@ -68,6 +70,7 @@ const PDF = ({
   toEmail,
   toPhone,
   toLogo,
+  toLogoShape,
   toAddress,
   toCity,
   toState,
@@ -82,6 +85,7 @@ const PDF = ({
       email={toEmail}
       phone={toPhone}
       logo={toLogo}
+      logoShape={toLogoShape}
       address={toAddress}
       city={toCity}
       state={toState}
