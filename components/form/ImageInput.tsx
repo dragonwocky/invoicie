@@ -22,6 +22,7 @@ const ImageInput = ({ label, clientKey }: ImageInputProps) => {
       <Controller
         render={({ field: { onChange, value } }) => (
           <button
+            type="button"
             title={value ? "Square image" : "Round image"}
             className="mr-3 rounded-md p-1.5 bg-neutral-100 hover:bg-neutral-50 outline-0 focus:ring-ring"
             onClick={() => {
@@ -41,7 +42,7 @@ const ImageInput = ({ label, clientKey }: ImageInputProps) => {
       <Controller
         render={({ field: { onChange, value } }) => (
           <div
-            className="flex flex-1 items-center"
+            className="w-0 flex-1 flex items-center justify-between"
             onClick={() => ref.current?.click()}
           >
             {label && (
@@ -78,12 +79,12 @@ const ImageInput = ({ label, clientKey }: ImageInputProps) => {
               ? (
                 <img
                   src={value}
-                  className={`ml-auto max-h-8 max-w-8 cursor-pointer ${tailwindShape}`}
+                  className={`max-h-8 max-w-8 cursor-pointer ${tailwindShape}`}
                 />
               )
               : (
                 <div
-                  className={`cursor-pointer ml-auto text-neutral-500/70 border border-dashed peer-focus:border-primary peer-focus:text-primary ${tailwindShape}`}
+                  className={`cursor-pointer text-neutral-500/70 border border-dashed peer-focus:border-primary peer-focus:text-primary ${tailwindShape}`}
                 >
                   <Plus className="w-4 h-4 m-2" />
                 </div>

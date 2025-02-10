@@ -144,7 +144,7 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
           <Title>Payable In</Title>
           <div className="flex gap-2 justify-between items-center w-full">
             <div className="flex gap-3 items-center">
-              <currency.Icon className="w-8 h-8 rounded-full" />
+              <currency.Icon className="w-8 h-8 shrink-0 rounded-full" />
               <div>
                 <Value>{currency.name}</Value>
                 <Subvalue>{currency.symbol} {currency.shortcode}</Subvalue>
