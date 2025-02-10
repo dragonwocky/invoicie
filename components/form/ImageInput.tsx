@@ -30,7 +30,7 @@ const ImageInput = ({ label, clientKey }: ImageInputProps) => {
             ref={ref}
             id={clientKey}
             accept=".png, .jpg, .jpeg, .svg"
-            className="peer appearance-none w-0 h-0"
+            className="peer hidden appearance-none w-0 h-0"
             onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
               if (!e.target.files?.[0]) return;
               const reader = new FileReader(),
