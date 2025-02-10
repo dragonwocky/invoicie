@@ -28,7 +28,7 @@ const Form = () => {
             ({ description, quantity, price }: Item, index: number) => (
               <div
                 key={index}
-                className="flex relative group -mr-10"
+                className="flex relative group md:-mr-10"
               >
                 <div className="w-full flex-1">
                   <Input
@@ -88,7 +88,7 @@ const Form = () => {
                   <button
                     type="button"
                     title="Delete item"
-                    className="rounded-md p-1.5 bg-neutral-50 opacity-0 group-hover:opacity-100"
+                    className="rounded-md p-1.5 bg-neutral-50 md:opacity-0 group-hover:opacity-100"
                     onClick={() => {
                       const items = [...value];
                       items.splice(index, 1);

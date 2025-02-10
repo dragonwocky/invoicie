@@ -13,7 +13,7 @@ const geistSans = Geist({
 export default ({ children }: Readonly<{ children: React.ReactNode }>) => (
   <html lang="en">
     <body className={`${geistSans.variable} antialiased md:overflow-hidden`}>
-      <div className="min-h-screen overflow-y-auto h-full flex items-center md:flex-row flex-col-reverse">
+      <div className="min-h-screen h-full flex items-center md:flex-row flex-col-reverse">
         {children}
       </div>
     </body>
