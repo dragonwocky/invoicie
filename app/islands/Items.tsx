@@ -177,6 +177,7 @@ const PDF: React.FC<{ items: Item[] }> = ({ items }) => (
       items.map(({ description, quantity, price }, index) => (
         <View
           key={index}
+          wrap={false}
           style={{
             ...pdfStyles.columns,
             borderBottom: pdfBorder,

@@ -14,6 +14,7 @@ import * as Items from "@/app/islands/Items.tsx";
 import * as Payment from "@/app/islands/Payment.tsx";
 import * as Reference from "@/app/islands/Reference.tsx";
 import * as To from "@/app/islands/To.tsx";
+import { Switch } from "@/components/form/Switch.tsx";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { useFlag } from "@/hooks/useCurrency.ts";
@@ -34,7 +35,9 @@ Font.register({
   ].map((src, i) => ({ src, fontWeight: i * 100 + 100 })),
 });
 
-const PDF: React.FC<{ flagDataUri: string }> = ({ flagDataUri }) => {
+const PDF: React.FC<{ flagDataUri: string; breakPages: boolean }> = (
+  { flagDataUri, breakPages },
+) => {
   const {
     invoicedTo,
     invoicedFrom,
@@ -43,7 +46,7 @@ const PDF: React.FC<{ flagDataUri: string }> = ({ flagDataUri }) => {
   } = useInvoice();
   return (
     <Document>
-      <Page size="A4" style={{ fontFamily: "Geist" }}>
+      <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages}>
         <Reference.PDF {...paymentDetails} />
         <View
           style={{
@@ -64,6 +67,7 @@ const PDF: React.FC<{ flagDataUri: string }> = ({ flagDataUri }) => {
 const Download = () => {
   const flag = useFlag(),
     invoiceNumber = useValue("invoiceNumber"),
+    breakPages = useValue<boolean>("breakPages"),
     [status, setStatus] = useState<
       "downloaded" | "downloading" | "not-downloaded"
     >("not-downloaded"),
@@ -92,6 +96,7 @@ const Download = () => {
         You're almost there! Please review entered details carefully before
         downloading your invoice.
       </p>
+      <Switch label="Split into pages" clientKey="breakPages" />
       <Button
         title="Download"
         className="mt-6 w-full py-6 text-base"
@@ -99,7 +104,12 @@ const Download = () => {
         onClick={async () => {
           try {
             setStatus("downloading");
-            const blob = await pdf(<PDF flagDataUri={await flag} />).toBlob();
+            const blob = await pdf(
+              <PDF
+                flagDataUri={await flag}
+                breakPages={breakPages}
+              />,
+            ).toBlob();
             saveAs(blob, `${invoiceNumber || "invoice"}.pdf`);
             setStatus("downloaded");
           } catch (e) {

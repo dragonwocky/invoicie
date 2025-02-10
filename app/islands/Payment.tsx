@@ -173,12 +173,12 @@ const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
   return (
     <>
       <View
+        wrap={false}
         style={{
           display: "flex",
           flexDirection: "row",
           borderBottom: pdfBorder,
           paddingBottom: 16,
-          marginBottom: 16,
         }}
       >
         <View style={{ flex: 1, paddingTop: 12, paddingHorizontal: 32 }}>
@@ -239,91 +239,93 @@ const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
           </View>
         </View>
       </View>
-      {paymentUrl && (
-        <View
-          style={{
-            ...pdfStyles.columns,
-            justifyContent: "center",
-            paddingHorizontal: 32,
-            paddingBottom: 12,
-          }}
-        >
-          <Text
+      <View wrap={false} style={{ marginTop: 16 }}>
+        {paymentUrl && (
+          <View
             style={{
-              ...pdfStyles.title,
-              marginBottom: 0,
-              marginTop: 1,
-              width: 148,
+              ...pdfStyles.columns,
+              justifyContent: "center",
+              paddingHorizontal: 32,
+              paddingBottom: 12,
             }}
           >
-            Pay Online
-          </Text>
-          <Link
-            src={paymentUrl}
-            style={{
-              ...pdfStyles.value,
-              textDecoration: "underline",
-              width: "100%"
-            }}
-          >
-            {paymentUrl.length > 64
-              ? paymentUrl.slice(0, 64) + "..."
-              : paymentUrl}
-          </Link>
-        </View>
-      )}
-      <View style={{ display: "flex", flexDirection: "row" }}>
-        <View style={{ flex: 1, paddingHorizontal: 32, paddingBottom: 16 }}>
-          <Text style={pdfStyles.title}>Payment Details</Text>
-          {accountName && (
-            <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-              <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
-                Account Name
-              </Text>
-              <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                {accountName}
-              </Text>
-            </View>
-          )}
-          {accountNumber && (
-            <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-              <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
-                Account Number
-              </Text>
-              <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                {accountNumber}
-              </Text>
-            </View>
-          )}
-          {branchNumber && (
-            <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-              <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>BSB</Text>
-              <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                {branchNumber}
-              </Text>
-            </View>
-          )}
-        </View>
-        <View style={{ flex: 1, paddingHorizontal: 32 }}>
-          <Text style={pdfStyles.title}>Payable In</Text>
-          <View style={pdfStyles.columns}>
-            <Image
-              src={flagDataUri}
+            <Text
               style={{
-                width: 32,
-                height: 32,
-                borderRadius: "100%",
-                objectFit: "cover",
-                marginRight: 8,
+                ...pdfStyles.title,
+                marginBottom: 0,
+                marginTop: 1,
+                width: 148,
               }}
-            />
-            <View>
-              <Text style={pdfStyles.value}>
-                {currency.name}
-              </Text>
-              <Text style={pdfStyles.subvalue}>
-                {currency.symbol} {currency.shortcode}
-              </Text>
+            >
+              Pay Online
+            </Text>
+            <Link
+              src={paymentUrl}
+              style={{
+                ...pdfStyles.value,
+                textDecoration: "underline",
+                width: "100%",
+              }}
+            >
+              {paymentUrl.length > 64
+                ? paymentUrl.slice(0, 64) + "..."
+                : paymentUrl}
+            </Link>
+          </View>
+        )}
+        <View style={{ display: "flex", flexDirection: "row" }}>
+          <View style={{ flex: 1, paddingHorizontal: 32, paddingBottom: 16 }}>
+            <Text style={pdfStyles.title}>Payment Details</Text>
+            {accountName && (
+              <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                  Account Name
+                </Text>
+                <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                  {accountName}
+                </Text>
+              </View>
+            )}
+            {accountNumber && (
+              <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                  Account Number
+                </Text>
+                <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                  {accountNumber}
+                </Text>
+              </View>
+            )}
+            {branchNumber && (
+              <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>BSB</Text>
+                <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                  {branchNumber}
+                </Text>
+              </View>
+            )}
+          </View>
+          <View style={{ flex: 1, paddingHorizontal: 32 }}>
+            <Text style={pdfStyles.title}>Payable In</Text>
+            <View style={pdfStyles.columns}>
+              <Image
+                src={flagDataUri}
+                style={{
+                  width: 32,
+                  height: 32,
+                  borderRadius: "100%",
+                  objectFit: "cover",
+                  marginRight: 8,
+                }}
+              />
+              <View>
+                <Text style={pdfStyles.value}>
+                  {currency.name}
+                </Text>
+                <Text style={pdfStyles.subvalue}>
+                  {currency.symbol} {currency.shortcode}
+                </Text>
+              </View>
             </View>
           </View>
         </View>
