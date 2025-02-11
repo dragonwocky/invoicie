@@ -37,6 +37,11 @@ const Form = () => (
     />
     <TextInput label="BSB" placeholder="XXX XXX" clientKey="branchNumber" />
     <TextInput
+      label="Description"
+      placeholder={format(new Date(), "yMMdd-01")}
+      clientKey="paymentDescription"
+    />
+    <TextInput
       label="Invoice Number"
       placeholder={format(new Date(), "yMMdd-01")}
       clientKey="invoiceNumber"
@@ -59,13 +64,17 @@ const Form = () => (
   </>
 );
 
-const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
+const Preview: React.FC<
+  PaymentDetails & { isQuote: boolean; onClick?: () => void }
+> = ({
   accountName,
   accountNumber,
   branchNumber,
+  paymentDescription,
   paymentUrl,
   discount,
   note,
+  isQuote,
   onClick,
 }) => {
   const currency = useCurrency(),
@@ -110,7 +119,7 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
           </Columns>
         </div>
       </Columns>
-      {paymentUrl && (
+      {!isQuote && paymentUrl && (
         <Columns className="grid-cols-4 pb-3">
           <Title className="pl-8 mb-0 mt-px">Pay Online</Title>
           <Value className="pr-8 col-span-3 underline truncate">
@@ -118,27 +127,38 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
           </Value>
         </Columns>
       )}
-      <Columns className="pb-4">
+      <Columns className="pb-5">
         <div className="px-8">
-          <Title>Payment Details</Title>
-          <Columns className="mb-1">
-            <Subtitle>Account Name</Subtitle>
-            {accountName
-              ? <Value>{accountName}</Value>
-              : <Skeleton className="h-4 w-full" />}
-          </Columns>
-          <Columns className="mb-1">
-            <Subtitle>Account Number</Subtitle>
-            {accountNumber
-              ? <Value>{accountNumber}</Value>
-              : <Skeleton className="h-4 w-full" />}
-          </Columns>
-          <Columns className="mb-1">
-            <Subtitle>BSB</Subtitle>
-            {branchNumber
-              ? <Value>{branchNumber}</Value>
-              : <Skeleton className="h-4 w-full" />}
-          </Columns>
+          {!isQuote && (
+            <>
+              <Title>Payment Details</Title>
+              <Columns className="mb-1">
+                <Subtitle>Account Name</Subtitle>
+                {accountName
+                  ? <Value>{accountName}</Value>
+                  : <Skeleton className="h-4 w-full" />}
+              </Columns>
+              <Columns className="mb-1">
+                <Subtitle>Account Number</Subtitle>
+                {accountNumber
+                  ? <Value>{accountNumber}</Value>
+                  : <Skeleton className="h-4 w-full" />}
+              </Columns>
+              <Columns className="mb-1">
+                <Subtitle>BSB</Subtitle>
+                {branchNumber
+                  ? <Value>{branchNumber}</Value>
+                  : <Skeleton className="h-4 w-full" />}
+              </Columns>
+              {paymentDescription &&
+                (
+                  <Columns className="mb-1">
+                    <Subtitle>Description</Subtitle>
+                    <Value>{paymentDescription}</Value>
+                  </Columns>
+                )}
+            </>
+          )}
         </div>
         <div className="px-8">
           <Title>Payable In</Title>
@@ -157,13 +177,17 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
   );
 };
 
-const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
+const PDF: React.FC<
+  PaymentDetails & { isQuote: boolean; flagDataUri: string }
+> = ({
   flagDataUri,
   accountName,
   accountNumber,
   branchNumber,
+  paymentDescription,
   paymentUrl,
   discount,
+  isQuote,
   note,
 }) => {
   const currency = useCurrency(),
@@ -240,7 +264,7 @@ const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
         </View>
       </View>
       <View wrap={false} style={{ marginTop: 16 }}>
-        {paymentUrl && (
+        {!isQuote && paymentUrl && (
           <View
             style={{
               ...pdfStyles.columns,
@@ -273,36 +297,50 @@ const PDF: React.FC<PaymentDetails & { flagDataUri: string }> = ({
             </Link>
           </View>
         )}
-        <View style={{ display: "flex", flexDirection: "row" }}>
-          <View style={{ flex: 1, paddingHorizontal: 32, paddingBottom: 16 }}>
-            <Text style={pdfStyles.title}>Payment Details</Text>
-            {accountName && (
-              <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-                <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
-                  Account Name
-                </Text>
-                <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                  {accountName}
-                </Text>
-              </View>
-            )}
-            {accountNumber && (
-              <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-                <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
-                  Account Number
-                </Text>
-                <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                  {accountNumber}
-                </Text>
-              </View>
-            )}
-            {branchNumber && (
-              <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
-                <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>BSB</Text>
-                <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                  {branchNumber}
-                </Text>
-              </View>
+        <View style={{ display: "flex", flexDirection: "row", paddingBottom: 20 }}>
+          <View style={{ flex: 1, paddingHorizontal: 32 }}>
+            {!isQuote && (
+              <>
+                <Text style={pdfStyles.title}>Payment Details</Text>
+                {accountName && (
+                  <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                    <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                      Account Name
+                    </Text>
+                    <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                      {accountName}
+                    </Text>
+                  </View>
+                )}
+                {accountNumber && (
+                  <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                    <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                      Account Number
+                    </Text>
+                    <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                      {accountNumber}
+                    </Text>
+                  </View>
+                )}
+                {branchNumber && (
+                  <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                    <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>BSB</Text>
+                    <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                      {branchNumber}
+                    </Text>
+                  </View>
+                )}
+                {paymentDescription && (
+                  <View style={{ ...pdfStyles.columns, marginBottom: 4 }}>
+                    <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>
+                      Description
+                    </Text>
+                    <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                      {paymentDescription}
+                    </Text>
+                  </View>
+                )}
+              </>
             )}
           </View>
           <View style={{ flex: 1, paddingHorizontal: 32 }}>

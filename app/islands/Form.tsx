@@ -80,7 +80,9 @@ const Form = () => {
             <p className="text-xs">v{pkg.version}</p>
           </div>
         </div>
-        <p className="pt-8 md:pt-16 text-2xl font-semibold pb-12 max-md:text-center">{usePageTitle()}</p>
+        <p className="pt-8 text-2xl font-semibold pb-12 max-md:text-center">
+          {usePageTitle()}
+        </p>
         {[
           <From.Form />,
           <To.Form />,

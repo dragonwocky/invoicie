@@ -43,11 +43,12 @@ const PDF: React.FC<{ flagDataUri: string; breakPages: boolean }> = (
     invoicedFrom,
     invoiceItems,
     paymentDetails,
+    isQuote,
   } = useInvoice();
   return (
     <Document>
       <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages}>
-        <Reference.PDF {...paymentDetails} />
+        <Reference.PDF isQuote={isQuote} {...paymentDetails} />
         <View
           style={{
             ...pdfStyles.columns,
@@ -58,7 +59,11 @@ const PDF: React.FC<{ flagDataUri: string; breakPages: boolean }> = (
           <To.PDF {...invoicedTo} />
         </View>
         <Items.PDF items={invoiceItems} />
-        <Payment.PDF flagDataUri={flagDataUri} {...paymentDetails} />
+        <Payment.PDF
+          isQuote={isQuote}
+          flagDataUri={flagDataUri}
+          {...paymentDetails}
+        />
       </Page>
     </Document>
   );
@@ -96,7 +101,8 @@ const Download = () => {
         You're almost there! Please review entered details carefully before
         downloading your invoice.
       </p>
-      <Switch label="Split into pages" clientKey="breakPages" />
+      <Switch label="Download a quote" clientKey="isQuote" />
+      <Switch label="Split pages for print" clientKey="breakPages" />
       <Button
         title="Download"
         className="mt-6 w-full py-6 text-base"

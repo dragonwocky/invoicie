@@ -7,8 +7,8 @@ const useShape = (clientKey: string) => {
   useShapeStyle = (shape?: string) => {
     const square = shape === "square";
     return {
-      tailwindShape: square ? "rounded-sm" : "rounded-full",
-      cssShape: { borderRadius: square ? "4px" : "100%" },
+      tailwindShape: square ? "" : "rounded-full",
+      cssShape: { borderRadius: square ? "0px" : "100%" },
     };
   };
 

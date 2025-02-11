@@ -51,12 +51,13 @@ interface PaymentDetails {
   accountName?: string;
   accountNumber?: string;
   branchNumber?: string;
+  paymentDescription?: string;
+  paymentUrl?: string;
   invoiceNumber?: string;
   issueDate?: string;
   dueDate?: string;
   currency?: string;
   discount?: string;
-  paymentUrl?: string;
   note?: string;
 }
 
@@ -65,4 +66,5 @@ interface Invoice {
   invoicedFrom: InvoicedFrom;
   invoiceItems: Item[];
   paymentDetails: PaymentDetails;
+  isQuote: boolean;
 }

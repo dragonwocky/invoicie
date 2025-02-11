@@ -43,6 +43,7 @@ const useInvoice = (): Invoice => {
       accountNumber: useValue("accountNumber"),
       branchNumber: useValue("branchNumber"),
       invoiceNumber: useValue("invoiceNumber"),
+      paymentDescription: useValue("paymentDescription"),
       paymentUrl: useValue("paymentUrl"),
       issueDate: useValue("issueDate"),
       dueDate: useValue("dueDate"),
@@ -50,13 +51,15 @@ const useInvoice = (): Invoice => {
       discount: useValue("discount"),
       note: useValue("note"),
     },
-    invoiceItems = useValue<Item[]>("items");
+    invoiceItems = useValue<Item[]>("items"),
+    isQuote = useValue<boolean>("isQuote");
 
   return {
     invoicedTo,
     invoicedFrom,
     paymentDetails,
     invoiceItems,
+    isQuote
   };
 };
 

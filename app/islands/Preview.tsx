@@ -19,6 +19,7 @@ export const Preview = () => {
     invoicedFrom,
     invoiceItems,
     paymentDetails,
+    isQuote,
   } = useInvoice();
 
   const page = useValue<number>("page"),
@@ -34,13 +35,21 @@ export const Preview = () => {
       </div>
       <div className="max-md:[zoom:0.6] overflow-auto md:overflow-x-hidden bg-white rounded-2xl border border-dashed justify-center">
         <div className="w-[595px] h-[842px]">
-          <Reference.Preview {...paymentDetails} onClick={() => onClick(2)} />
+          <Reference.Preview
+            isQuote={isQuote}
+            onClick={() => onClick(2)}
+            {...paymentDetails}
+          />
           <Columns className="border-b border-dashed">
-            <From.Preview {...invoicedFrom} onClick={() => onClick(0)} />
-            <To.Preview {...invoicedTo} onClick={() => onClick(1)} />
+            <From.Preview onClick={() => onClick(0)} {...invoicedFrom} />
+            <To.Preview onClick={() => onClick(1)} {...invoicedTo} />
           </Columns>
           <Items.Preview items={invoiceItems} onClick={() => onClick(3)} />
-          <Payment.Preview {...paymentDetails} onClick={() => onClick(2)} />
+          <Payment.Preview
+            isQuote={isQuote}
+            onClick={() => onClick(2)}
+            {...paymentDetails}
+          />
           {page !== 4 && (
             <div className="absolute inset-x-0 bottom-0 md:bottom-8 w-full flex justify-center">
               <Button

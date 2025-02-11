@@ -14,10 +14,13 @@ import {
 } from "@/components/Typography.tsx";
 import { Text, View } from "@react-pdf/renderer";
 
-const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
+const Preview: React.FC<
+  PaymentDetails & { isQuote: boolean; onClick?: () => void }
+> = ({
   invoiceNumber,
   issueDate,
   dueDate,
+  isQuote,
   onClick,
 }) => (
   <Columns
@@ -26,7 +29,7 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
   >
     <Frame />
     <div className="px-8">
-      <Title>Invoice No</Title>
+      <Title>{isQuote ? "Quote" : "Invoice"} No</Title>
       {invoiceNumber
         ? <Value>{invoiceNumber}</Value>
         : <Skeleton className="h-4 w-full" />}
@@ -38,20 +41,23 @@ const Preview: React.FC<PaymentDetails & { onClick?: () => void }> = ({
           ? <Value>{format(issueDate, "do MMM yyyy")}</Value>
           : <Skeleton className="h-4 w-full" />}
       </div>
-      <div className="ml-2 text-right">
-        <Title>Due</Title>
-        {dueDate
-          ? <Value>{format(dueDate, "do MMM yyyy")}</Value>
-          : <Skeleton className="h-4 w-full" />}
-      </div>
+      {!isQuote && (
+        <div className="ml-2 text-right">
+          <Title>Due</Title>
+          {dueDate
+            ? <Value>{format(dueDate, "do MMM yyyy")}</Value>
+            : <Skeleton className="h-4 w-full" />}
+        </div>
+      )}
     </Columns>
   </Columns>
 );
 
-const PDF: React.FC<PaymentDetails> = ({
+const PDF: React.FC<PaymentDetails & { isQuote: boolean }> = ({
   invoiceNumber,
   issueDate,
   dueDate,
+  isQuote,
 }) => (
   <View
     style={{
@@ -61,7 +67,7 @@ const PDF: React.FC<PaymentDetails> = ({
     }}
   >
     <View style={{ flex: 1, paddingHorizontal: 32 }}>
-      <Text style={pdfStyles.title}>Invoice No</Text>
+      <Text style={pdfStyles.title}>{isQuote ? "Quote" : "Invoice"} No</Text>
       {invoiceNumber && <Text style={pdfStyles.value}>{invoiceNumber}</Text>}
     </View>
     <View style={{ ...pdfStyles.columns, flex: 1, paddingHorizontal: 32 }}>
@@ -73,12 +79,16 @@ const PDF: React.FC<PaymentDetails> = ({
           </Text>
         )}
       </View>
-      <View style={{ flex: 1, marginLeft: 8, textAlign: "right" }}>
-        <Text style={pdfStyles.title}>Due</Text>
-        {dueDate && (
-          <Text style={pdfStyles.value}>{format(dueDate, "do MMM yyyy")}</Text>
-        )}
-      </View>
+      {!isQuote && (
+        <View style={{ flex: 1, marginLeft: 8, textAlign: "right" }}>
+          <Text style={pdfStyles.title}>Due</Text>
+          {dueDate && (
+            <Text style={pdfStyles.value}>
+              {format(dueDate, "do MMM yyyy")}
+            </Text>
+          )}
+        </View>
+      )}
     </View>
   </View>
 );
