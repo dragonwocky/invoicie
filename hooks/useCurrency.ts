@@ -1,5 +1,5 @@
-import { flagToDataUri } from "@/app/utils.ts";
 import { useValue } from "@/hooks/useValue.ts";
+import { flagToDataUri } from "@/lib/svg.ts";
 import { AU, EU, type FlagComponent, US } from "country-flag-icons/react/1x1";
 
 const currencies: {
@@ -7,7 +7,7 @@ const currencies: {
     country: string;
     symbol: string;
     shortcode: string;
-    iconId: string;
+    flagDataUri: string;
     Icon: FlagComponent;
   }[] = [
     {
@@ -15,7 +15,7 @@ const currencies: {
       country: "Australia",
       symbol: "$",
       shortcode: "AUD",
-      iconId: "AU",
+      flagDataUri: await flagToDataUri("AU"),
       Icon: AU,
     },
     {
@@ -23,7 +23,7 @@ const currencies: {
       country: "United States",
       symbol: "$",
       shortcode: "USD",
-      iconId: "US",
+      flagDataUri: await flagToDataUri("US"),
       Icon: US,
     },
     {
@@ -31,7 +31,7 @@ const currencies: {
       country: "European Union",
       symbol: "€",
       shortcode: "EUR",
-      iconId: "EU",
+      flagDataUri: await flagToDataUri("EU"),
       Icon: EU,
     },
   ],
@@ -39,7 +39,6 @@ const currencies: {
     return currencies.find((currency) =>
       currency.shortcode.toLowerCase() === shortcode?.toLowerCase()
     ) || currencies[0];
-  },
-  useFlag = () => flagToDataUri(useCurrency().iconId);
+  };
 
-export { currencies, useCurrency, useFlag };
+export { currencies, useCurrency };

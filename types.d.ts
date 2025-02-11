@@ -1,31 +1,3 @@
-interface InvoicedFrom {
-  fromName?: string;
-  fromEmail?: string;
-  fromPhone?: string;
-  fromLogo?: string;
-  fromLogoShape?: string;
-  fromAddress?: string;
-  fromCity?: string;
-  fromState?: string;
-  fromCountry?: string;
-  fromPostcode?: string;
-  fromABN?: string;
-}
-
-interface InvoicedTo {
-  toName?: string;
-  toEmail?: string;
-  toPhone?: string;
-  toDepartment?: string;
-  toLogo?: string;
-  toLogoShape?: string;
-  toAddress?: string;
-  toCity?: string;
-  toState?: string;
-  toCountry?: string;
-  toPostcode?: string;
-}
-
 interface Party {
   title?: string;
   name?: string;
@@ -47,13 +19,32 @@ interface Item {
   price?: number;
 }
 
-interface InvoiceReference {
+interface Invoice {
+  fromName?: string;
+  fromEmail?: string;
+  fromPhone?: string;
+  fromLogo?: string;
+  fromLogoShape?: string;
+  fromAddress?: string;
+  fromCity?: string;
+  fromState?: string;
+  fromCountry?: string;
+  fromPostcode?: string;
+  fromABN?: string;
+  toName?: string;
+  toEmail?: string;
+  toPhone?: string;
+  toDepartment?: string;
+  toLogo?: string;
+  toLogoShape?: string;
+  toAddress?: string;
+  toCity?: string;
+  toState?: string;
+  toCountry?: string;
+  toPostcode?: string;
   invoiceNumber?: string;
   issueDate?: string;
   dueDate?: string;
-}
-
-interface PaymentDetails {
   accountName?: string;
   accountNumber?: string;
   branchNumber?: string;
@@ -63,13 +54,7 @@ interface PaymentDetails {
   discount?: string;
   collectGST?: string;
   note?: string;
-}
-
-interface Invoice {
-  invoicedTo: InvoicedTo;
-  invoicedFrom: InvoicedFrom;
-  invoiceReference: InvoiceReference;
-  paymentDetails: PaymentDetails;
-  invoiceItems: Item[];
-  isQuote: boolean;
+  items?: Item[];
+  breakPages?: boolean;
+  isQuote?: boolean;
 }

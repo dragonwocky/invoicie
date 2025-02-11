@@ -5,7 +5,6 @@ import { Plus, Trash2 } from "lucide-react";
 import React from "react";
 import { Controller } from "react-hook-form";
 
-import { addCommasToNumber, formatCurrencyValue } from "@/app/utils.ts";
 import { Input } from "@/components/form/Input.tsx";
 import {
   Columns,
@@ -17,8 +16,10 @@ import {
 } from "@/components/Typography.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 import { useCurrency } from "@/hooks/useCurrency.ts";
+import { addCommasToNumber, formatCurrencyValue } from "@/lib/utils.ts";
+import { useValue } from "@/hooks/useValue.ts";
 
-const Form = () => {
+const Form: React.FC = () => {
   const currency = useCurrency();
   return (
     <Controller
@@ -124,83 +125,87 @@ const Form = () => {
   );
 };
 
-const Preview: React.FC<
-  { items: Item[]; onClick?: () => void }
-> = ({ items, onClick }) => (
-  <div className="group cursor-pointer relative pt-4" onClick={onClick}>
-    <Frame />
-    <Columns className="mx-8 pb-2 border-b border-dashed">
-      <Title className="mr-8">Description</Title>
-      <Columns className="grid-cols-3 ml-8">
-        <Title>Qty</Title>
-        <Title>Price</Title>
-        <Title className="text-right">Amount</Title>
-      </Columns>
-    </Columns>
-    {Array.isArray(items) &&
-      items.map(({ description, quantity, price }, index) => (
-        <Columns key={index} className="mx-8 py-3 border-b border-dashed">
-          <Value className="mr-8">{description}</Value>
-          <Columns className="grid-cols-3 ml-8">
-            <Value>{addCommasToNumber(quantity || 0)}</Value>
-            <Value>{formatCurrencyValue(price || 0)}</Value>
-            <Value className="text-right">
-              {formatCurrencyValue((quantity || 0) * (price || 0))}
-            </Value>
-          </Columns>
+const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
+  const items = useValue<Item[]>("items");
+  return (
+    <div className="group cursor-pointer relative pt-4" onClick={onClick}>
+      <Frame />
+      <Columns className="mx-8 pb-2 border-b border-dashed">
+        <Title className="mr-8">Description</Title>
+        <Columns className="grid-cols-3 ml-8">
+          <Title>Qty</Title>
+          <Title>Price</Title>
+          <Title className="text-right">Amount</Title>
         </Columns>
-      ))}
-  </div>
-);
+      </Columns>
+      {Array.isArray(items) &&
+        items.map(({ description, quantity, price }, index) => (
+          <Columns key={index} className="mx-8 py-3 border-b border-dashed">
+            <Value className="mr-8">{description}</Value>
+            <Columns className="grid-cols-3 ml-8">
+              <Value>{addCommasToNumber(quantity || 0)}</Value>
+              <Value>{formatCurrencyValue(price || 0)}</Value>
+              <Value className="text-right">
+                {formatCurrencyValue((quantity || 0) * (price || 0))}
+              </Value>
+            </Columns>
+          </Columns>
+        ))}
+    </div>
+  );
+};
 
-const PDF: React.FC<{ items: Item[] }> = ({ items }) => (
-  <View style={{ paddingTop: 16, paddingHorizontal: 32 }}>
-    <View
-      style={{
-        ...pdfStyles.columns,
-        borderBottom: pdfBorder,
-        paddingBottom: 8,
-      }}
-    >
-      <Text style={{ ...pdfStyles.title, flex: 1, marginRight: 32 }}>
-        Description
-      </Text>
-      <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
-        <Text style={{ ...pdfStyles.title, flex: 1 }}>Qty</Text>
-        <Text style={{ ...pdfStyles.title, flex: 1 }}>Price</Text>
-        <Text style={{ ...pdfStyles.title, flex: 1, textAlign: "right" }}>
-          Amount
+const PDF: React.FC = () => {
+  const items = useValue<Item[]>("items");
+  return (
+    <View style={{ paddingTop: 16, paddingHorizontal: 32 }}>
+      <View
+        style={{
+          ...pdfStyles.columns,
+          borderBottom: pdfBorder,
+          paddingBottom: 8,
+        }}
+      >
+        <Text style={{ ...pdfStyles.title, flex: 1, marginRight: 32 }}>
+          Description
         </Text>
-      </View>
-    </View>
-    {Array.isArray(items) &&
-      items.map(({ description, quantity, price }, index) => (
-        <View
-          key={index}
-          wrap={false}
-          style={{
-            ...pdfStyles.columns,
-            borderBottom: pdfBorder,
-            paddingVertical: 12,
-          }}
-        >
-          <Text style={{ ...pdfStyles.value, flex: 1, marginRight: 32 }}>
-            {description}
+        <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
+          <Text style={{ ...pdfStyles.title, flex: 1 }}>Qty</Text>
+          <Text style={{ ...pdfStyles.title, flex: 1 }}>Price</Text>
+          <Text style={{ ...pdfStyles.title, flex: 1, textAlign: "right" }}>
+            Amount
           </Text>
-          <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
-            <Text style={{ ...pdfStyles.value, flex: 1 }}>
-              {addCommasToNumber(quantity || 0)}
-            </Text>
-            <Text style={{ ...pdfStyles.value, flex: 1 }}>
-              {formatCurrencyValue(price || 0)}
-            </Text>
-            <Text style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}>
-              {formatCurrencyValue((quantity || 0) * (price || 0))}
-            </Text>
-          </View>
         </View>
-      ))}
-  </View>
-);
+      </View>
+      {Array.isArray(items) &&
+        items.map(({ description, quantity, price }, index) => (
+          <View
+            key={index}
+            wrap={false}
+            style={{
+              ...pdfStyles.columns,
+              borderBottom: pdfBorder,
+              paddingVertical: 12,
+            }}
+          >
+            <Text style={{ ...pdfStyles.value, flex: 1, marginRight: 32 }}>
+              {description}
+            </Text>
+            <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
+              <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                {addCommasToNumber(quantity || 0)}
+              </Text>
+              <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                {formatCurrencyValue(price || 0)}
+              </Text>
+              <Text style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}>
+                {formatCurrencyValue((quantity || 0) * (price || 0))}
+              </Text>
+            </View>
+          </View>
+        ))}
+    </View>
+  );
+};
 
 export { Form, PDF, Preview };

@@ -4,8 +4,8 @@ import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { ComponentPropsWithoutRef, FC, useRef } from "react";
 import { Controller } from "react-hook-form";
 
-import { cn } from "@/app/utils.ts";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
+import { cn } from "@/lib/utils.ts";
 
 const Switch: FC<
   ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {

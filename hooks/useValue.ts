@@ -11,60 +11,49 @@ const useValue = <T = string>(clientKey: string): T => {
   }
 };
 
-const useInvoice = (): Invoice => {
-  const invoicedTo: InvoicedTo = {
-      toEmail: useValue("toEmail"),
-      toPhone: useValue("toPhone"),
-      toName: useValue("toName"),
-      toDepartment: useValue("toDepartment"),
-      toLogo: useValue("toLogo"),
-      toLogoShape: useValue("toLogoShape"),
-      toAddress: useValue("toAddress"),
-      toCity: useValue("toCity"),
-      toState: useValue("toState"),
-      toCountry: useValue("toCountry"),
-      toPostcode: useValue("toPostcode"),
-    },
-    invoicedFrom: InvoicedFrom = {
-      fromEmail: useValue("fromEmail"),
-      fromPhone: useValue("fromPhone"),
-      fromName: useValue("fromName"),
-      fromLogo: useValue("fromLogo"),
-      fromLogoShape: useValue("fromLogoShape"),
-      fromAddress: useValue("fromAddress"),
-      fromCity: useValue("fromCity"),
-      fromState: useValue("fromState"),
-      fromCountry: useValue("fromCountry"),
-      fromPostcode: useValue("fromPostcode"),
-      fromABN: useValue("fromABN"),
-    },
-    invoiceReference: InvoiceReference = {
-      invoiceNumber: useValue("invoiceNumber"),
-      issueDate: useValue("issueDate"),
-      dueDate: useValue("dueDate"),
-    },
-    paymentDetails: PaymentDetails = {
-      accountName: useValue("accountName"),
-      accountNumber: useValue("accountNumber"),
-      branchNumber: useValue("branchNumber"),
-      paymentDescription: useValue("paymentDescription"),
-      paymentUrl: useValue("paymentUrl"),
-      currency: useValue("currency"),
-      discount: useValue("discount"),
-      collectGST: useValue("collectGST"),
-      note: useValue("note"),
-    },
-    invoiceItems = useValue<Item[]>("items"),
-    isQuote = useValue<boolean>("isQuote");
-
-  return {
-    invoicedTo,
-    invoicedFrom,
-    invoiceReference,
-    paymentDetails,
-    invoiceItems,
-    isQuote,
+const invoiceKeys = [
+    "fromName",
+    "fromEmail",
+    "fromPhone",
+    "fromLogo",
+    "fromLogoShape",
+    "fromAddress",
+    "fromCity",
+    "fromState",
+    "fromCountry",
+    "fromPostcode",
+    "fromABN",
+    "toName",
+    "toEmail",
+    "toPhone",
+    "toDepartment",
+    "toLogo",
+    "toLogoShape",
+    "toAddress",
+    "toCity",
+    "toState",
+    "toCountry",
+    "toPostcode",
+    "invoiceNumber",
+    "issueDate",
+    "dueDate",
+    "accountName",
+    "accountNumber",
+    "branchNumber",
+    "paymentDescription",
+    "paymentUrl",
+    "currency",
+    "discount",
+    "collectGST",
+    "note",
+    "items",
+    "breakPages",
+    "isQuote",
+  ],
+  useInvoice = (): Invoice => {
+    const get = (clientKey: string) => [clientKey, useValue(clientKey)],
+      entries = invoiceKeys.map(get);
+    return Object.fromEntries(entries);
   };
-};
 
-export { useInvoice, useValue };
+export { invoiceKeys, useInvoice, useValue };

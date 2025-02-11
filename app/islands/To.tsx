@@ -5,6 +5,7 @@ import { View } from "@react-pdf/renderer";
 import * as Party from "@/app/islands/Party.tsx";
 import { ImageInput } from "@/components/form/ImageInput.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
+import { useInvoice } from "@/hooks/useValue.ts";
 
 const Form = () => (
   <>
@@ -33,52 +34,22 @@ const Form = () => (
   </>
 );
 
-const Preview = ({
-  toName,
-  toDepartment,
-  toEmail,
-  toPhone,
-  toLogo,
-  toLogoShape,
-  toAddress,
-  toCity,
-  toState,
-  toCountry,
-  toPostcode,
-  onClick,
-}: InvoicedTo & { onClick: () => void }) => (
-  <Party.Preview
-    title="To"
-    name={toName}
-    description={toDepartment}
-    email={toEmail}
-    phone={toPhone}
-    logo={toLogo}
-    logoShape={toLogoShape}
-    address={toAddress}
-    city={toCity}
-    state={toState}
-    country={toCountry}
-    postcode={toPostcode}
-    onClick={onClick}
-  />
-);
-
-const PDF = ({
-  toName,
-  toDepartment,
-  toEmail,
-  toPhone,
-  toLogo,
-  toLogoShape,
-  toAddress,
-  toCity,
-  toState,
-  toCountry,
-  toPostcode,
-}: InvoicedTo) => (
-  <View style={{ flex: 1 }}>
-    <Party.PDF
+const Preview: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const {
+    toName,
+    toDepartment,
+    toEmail,
+    toPhone,
+    toLogo,
+    toLogoShape,
+    toAddress,
+    toCity,
+    toState,
+    toCountry,
+    toPostcode,
+  } = useInvoice();
+  return (
+    <Party.Preview
       title="To"
       name={toName}
       description={toDepartment}
@@ -91,8 +62,43 @@ const PDF = ({
       state={toState}
       country={toCountry}
       postcode={toPostcode}
+      onClick={onClick}
     />
-  </View>
-);
+  );
+};
+
+const PDF: React.FC = () => {
+  const {
+    toName,
+    toDepartment,
+    toEmail,
+    toPhone,
+    toLogo,
+    toLogoShape,
+    toAddress,
+    toCity,
+    toState,
+    toCountry,
+    toPostcode,
+  } = useInvoice();
+  return (
+    <View style={{ flex: 1 }}>
+      <Party.PDF
+        title="To"
+        name={toName}
+        description={toDepartment}
+        email={toEmail}
+        phone={toPhone}
+        logo={toLogo}
+        logoShape={toLogoShape}
+        address={toAddress}
+        city={toCity}
+        state={toState}
+        country={toCountry}
+        postcode={toPostcode}
+      />
+    </View>
+  );
+};
 
 export { Form, PDF, Preview };

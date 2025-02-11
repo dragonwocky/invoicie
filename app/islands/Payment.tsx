@@ -4,9 +4,9 @@ import { Image, Link, Text, View } from "@react-pdf/renderer";
 import { format } from "date-fns";
 import React from "react";
 
-import { calculateTotalAmount, formatCurrencyValue } from "@/app/utils.ts";
 import { CurrencyInput } from "@/components/form/CurrencyInput.tsx";
 import { NumberInput } from "@/components/form/NumberInput.tsx";
+import { Switch } from "@/components/form/Switch.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import {
   Columns,
@@ -20,10 +20,10 @@ import {
   Value,
 } from "@/components/Typography.tsx";
 import { useCurrency } from "@/hooks/useCurrency.ts";
-import { useValue } from "@/hooks/useValue.ts";
-import { Switch } from "@/components/form/Switch.tsx";
+import { useInvoice, useValue } from "@/hooks/useValue.ts";
+import { calculateTotalAmount, formatCurrencyValue } from "@/lib/utils.ts";
 
-const Form = () => (
+const Form: React.FC = () => (
   <>
     <TextInput
       label="Account Name"
@@ -58,21 +58,19 @@ const Form = () => (
   </>
 );
 
-const Preview: React.FC<
-  PaymentDetails & { isQuote: boolean; onClick?: () => void }
-> = ({
-  accountName,
-  accountNumber,
-  branchNumber,
-  paymentDescription,
-  paymentUrl,
-  collectGST,
-  discount,
-  note,
-  isQuote,
-  onClick,
-}) => {
-  const currency = useCurrency(),
+const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
+  const {
+      accountName,
+      accountNumber,
+      branchNumber,
+      paymentDescription,
+      paymentUrl,
+      collectGST,
+      discount,
+      note,
+      isQuote,
+    } = useInvoice(),
+    currency = useCurrency(),
     subtotal = calculateTotalAmount(useValue("items")),
     discountValue = discount ? (+discount) / 100 * -subtotal : 0,
     gstValue = collectGST ? (subtotal + discountValue) * 0.1 : 0,
@@ -185,21 +183,19 @@ const Preview: React.FC<
   );
 };
 
-const PDF: React.FC<
-  PaymentDetails & { isQuote: boolean; flagDataUri: string }
-> = ({
-  flagDataUri,
-  accountName,
-  accountNumber,
-  branchNumber,
-  paymentDescription,
-  paymentUrl,
-  collectGST,
-  discount,
-  isQuote,
-  note,
-}) => {
-  const currency = useCurrency(),
+const PDF: React.FC = () => {
+  const {
+      accountName,
+      accountNumber,
+      branchNumber,
+      paymentDescription,
+      paymentUrl,
+      collectGST,
+      discount,
+      isQuote,
+      note,
+    } = useInvoice(),
+    currency = useCurrency(),
     subtotal = calculateTotalAmount(useValue("items")),
     discountValue = discount ? (+discount) / 100 * -subtotal : 0,
     gstValue = collectGST ? (subtotal + discountValue) * 0.1 : 0,
@@ -382,7 +378,7 @@ const PDF: React.FC<
             <Text style={pdfStyles.title}>Payable In</Text>
             <View style={pdfStyles.columns}>
               <Image
-                src={flagDataUri}
+                src={currency.flagDataUri}
                 style={{
                   width: 32,
                   height: 32,

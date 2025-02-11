@@ -17,8 +17,7 @@ import * as To from "@/app/islands/To.tsx";
 import { Switch } from "@/components/form/Switch.tsx";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useFlag } from "@/hooks/useCurrency.ts";
-import { useInvoice, useValue } from "@/hooks/useValue.ts";
+import { useValue } from "@/hooks/useValue.ts";
 
 Font.register({
   family: "Geist",
@@ -35,66 +34,44 @@ Font.register({
   ].map((src, i) => ({ src, fontWeight: i * 100 + 100 })),
 });
 
-const PDF: React.FC<{ flagDataUri: string; breakPages: boolean }> = (
-  { flagDataUri, breakPages },
-) => {
-  const {
-    invoicedTo,
-    invoicedFrom,
-    invoiceItems,
-    invoiceReference,
-    paymentDetails,
-    isQuote,
-  } = useInvoice();
+const PDF = () => {
+  const breakPages = useValue<boolean>("breakPages");
   return (
     <Document>
       <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages}>
-        <Reference.PDF isQuote={isQuote} {...invoiceReference} />
+        <Reference.PDF />
         <View
           style={{
             ...pdfStyles.columns,
             borderBottom: pdfBorder,
           }}
         >
-          <From.PDF {...invoicedFrom} />
-          <To.PDF {...invoicedTo} />
+          <From.PDF />
+          <To.PDF />
         </View>
-        <Items.PDF items={invoiceItems} />
-        <Payment.PDF
-          isQuote={isQuote}
-          flagDataUri={flagDataUri}
-          {...paymentDetails}
-        />
+        <Items.PDF />
+        <Payment.PDF />
       </Page>
     </Document>
   );
 };
 
 const Download = () => {
-  const flag = useFlag(),
-    isQuote = useValue("isQuote"),
+  const isQuote = useValue<boolean>("isQuote"),
     invoiceNumber = useValue("invoiceNumber"),
-    breakPages = useValue<boolean>("breakPages"),
-    [status, setStatus] = useState<
-      "downloaded" | "downloading" | "not-downloaded"
-    >("not-downloaded"),
-    [icon, title] = {
-      "not-downloaded": [
-        <DownloadIcon />,
-        `Download ${isQuote ? "Quote" : "Invoice"}`,
-      ],
-      "downloading": [
-        <LoaderIcon className="animate-spin" />,
-        "Downloading...",
-      ],
-      "downloaded": [
-        <CheckCircle2 />,
-        "Downloaded",
-      ],
-    }[status];
+    [status, setStatus] = useState<0 | 1 | 2>(0),
+    [icon, title] = [[
+      <DownloadIcon />,
+      `Download ${isQuote ? "Quote" : "Invoice"}`,
+    ], [
+      <LoaderIcon className="animate-spin" />,
+      "Downloading...",
+    ], [
+      <CheckCircle2 />,
+      "Downloaded",
+    ]][status];
   useEffect(() => {
-    if (status !== "downloaded") return;
-    setTimeout(() => setStatus("not-downloaded"), 1000);
+    if (status === 2) setTimeout(() => setStatus(0), 1000);
   }, [status]);
 
   return (
@@ -108,21 +85,15 @@ const Download = () => {
       <Button
         title="Download"
         className="mt-3 w-full py-6 text-base"
-        disabled={status === "downloading"}
+        disabled={status === 1}
         onClick={async () => {
           try {
-            setStatus("downloading");
-            const blob = await pdf(
-              <PDF
-                flagDataUri={await flag}
-                breakPages={breakPages}
-              />,
-            ).toBlob();
+            setStatus(1);
+            const blob = await pdf(<PDF />).toBlob();
             saveAs(blob, `${invoiceNumber || "invoice"}.pdf`);
-            setStatus("downloaded");
-          } catch (e) {
-            console.error(e);
-            setStatus("not-downloaded");
+            setStatus(2);
+          } catch {
+            setStatus(0);
           }
         }}
       >

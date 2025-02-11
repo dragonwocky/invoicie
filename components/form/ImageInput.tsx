@@ -1,8 +1,8 @@
 "use client";
 
-import { svgToDataUri } from "@/app/utils.ts";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 import { useShape, useShapeStyle } from "@/hooks/useShape.ts";
+import { svgToDataUri } from "@/lib/svg.ts";
 import { Circle, Plus, Square } from "lucide-react";
 import { useRef } from "react";
 import { Controller } from "react-hook-form";

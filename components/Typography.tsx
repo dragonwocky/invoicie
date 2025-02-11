@@ -1,7 +1,7 @@
-import { cn } from "@/app/utils.ts";
-import { type ComponentProps, type FC } from "react";
-import { ChevronDown } from "lucide-react";
+import { cn } from "@/lib/utils.ts";
 import { StyleSheet } from "@react-pdf/renderer";
+import { ChevronDown } from "lucide-react";
+import { type ComponentProps, type FC } from "react";
 import colors from "tailwindcss/colors";
 
 const twStyle = (
@@ -66,5 +66,6 @@ export {
   Subtitle,
   Subvalue,
   Title,
-  Value,
+  Value
 };
+

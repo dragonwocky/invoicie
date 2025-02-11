@@ -1,11 +1,11 @@
 "use client"
 
-import * as React from "react"
 import { ChevronLeft, ChevronRight } from "lucide-react"
+import * as React from "react"
 import { DayPicker } from "react-day-picker"
 
-import { cn } from "@/app/utils.ts"
 import { buttonVariants } from "@/components/ui/button.tsx"
+import { cn } from "@/lib/utils.ts"
 
 export type CalendarProps = React.ComponentProps<typeof DayPicker>
 

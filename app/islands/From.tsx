@@ -6,9 +6,9 @@ import * as Party from "@/app/islands/Party.tsx";
 import { ImageInput } from "@/components/form/ImageInput.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import { pdfBorder } from "@/components/Typography.tsx";
-import { Switch } from "@/components/form/Switch.tsx";
+import { useInvoice } from "@/hooks/useValue.ts";
 
-const Form = () => (
+const Form: React.FC = () => (
   <>
     <TextInput label="Name" placeholder="Name" clientKey="fromName" />
     <TextInput label="ABN" placeholder="XX XXX XXX XXX" clientKey="fromABN" />
@@ -35,68 +35,73 @@ const Form = () => (
   </>
 );
 
-const Preview: React.FC<InvoicedFrom & { onClick: () => void }> = ({
-  fromName,
-  fromABN,
-  fromEmail,
-  fromPhone,
-  fromLogo,
-  fromLogoShape,
-  fromAddress,
-  fromCity,
-  fromState,
-  fromCountry,
-  fromPostcode,
-  onClick,
-}) => (
-  <div className="border-r border-dashed">
-    <Party.Preview
-      title="From"
-      name={fromName}
-      description={fromABN ? `ABN ${fromABN}` : ""}
-      email={fromEmail}
-      phone={fromPhone}
-      logo={fromLogo}
-      logoShape={fromLogoShape}
-      address={fromAddress}
-      city={fromCity}
-      state={fromState}
-      country={fromCountry}
-      postcode={fromPostcode}
-      onClick={onClick}
-    />
-  </div>
-);
+const Preview: React.FC<{ onClick: () => void }> = ({ onClick }) => {
+  const {
+    fromName,
+    fromABN,
+    fromEmail,
+    fromPhone,
+    fromLogo,
+    fromLogoShape,
+    fromAddress,
+    fromCity,
+    fromState,
+    fromCountry,
+    fromPostcode,
+  } = useInvoice();
+  return (
+    <div className="border-r border-dashed">
+      <Party.Preview
+        title="From"
+        name={fromName}
+        description={fromABN ? `ABN ${fromABN}` : ""}
+        email={fromEmail}
+        phone={fromPhone}
+        logo={fromLogo}
+        logoShape={fromLogoShape}
+        address={fromAddress}
+        city={fromCity}
+        state={fromState}
+        country={fromCountry}
+        postcode={fromPostcode}
+        onClick={onClick}
+      />
+    </div>
+  );
+};
 
-const PDF: React.FC<InvoicedFrom> = ({
-  fromName,
-  fromABN,
-  fromEmail,
-  fromPhone,
-  fromLogo,
-  fromLogoShape,
-  fromAddress,
-  fromCity,
-  fromState,
-  fromCountry,
-  fromPostcode,
-}) => (
-  <View style={{ flex: 1, borderRight: pdfBorder }}>
-    <Party.PDF
-      title="From"
-      name={fromName}
-      description={fromABN ? `ABN ${fromABN}` : ""}
-      email={fromEmail}
-      phone={fromPhone}
-      logo={fromLogo}
-      logoShape={fromLogoShape}
-      address={fromAddress}
-      city={fromCity}
-      state={fromState}
-      country={fromCountry}
-      postcode={fromPostcode}
-    />
-  </View>
-);
+const PDF: React.FC = () => {
+  const {
+    fromName,
+    fromABN,
+    fromEmail,
+    fromPhone,
+    fromLogo,
+    fromLogoShape,
+    fromAddress,
+    fromCity,
+    fromState,
+    fromCountry,
+    fromPostcode,
+  } = useInvoice();
+  return (
+    <View style={{ flex: 1, borderRight: pdfBorder }}>
+      <Party.PDF
+        title="From"
+        name={fromName}
+        description={fromABN ? `ABN ${fromABN}` : ""}
+        email={fromEmail}
+        phone={fromPhone}
+        logo={fromLogo}
+        logoShape={fromLogoShape}
+        address={fromAddress}
+        city={fromCity}
+        state={fromState}
+        country={fromCountry}
+        postcode={fromPostcode}
+      />
+    </View>
+  );
+};
 
 export { Form, PDF, Preview };
