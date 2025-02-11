@@ -6,7 +6,6 @@ import React from "react";
 
 import { calculateTotalAmount, formatCurrencyValue } from "@/app/utils.ts";
 import { CurrencyInput } from "@/components/form/CurrencyInput.tsx";
-import { DateInput } from "@/components/form/DateInput.tsx";
 import { NumberInput } from "@/components/form/NumberInput.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import {
@@ -22,6 +21,7 @@ import {
 } from "@/components/Typography.tsx";
 import { useCurrency } from "@/hooks/useCurrency.ts";
 import { useValue } from "@/hooks/useValue.ts";
+import { Switch } from "@/components/form/Switch.tsx";
 
 const Form = () => (
   <>
@@ -41,13 +41,6 @@ const Form = () => (
       placeholder={format(new Date(), "yMMdd-01")}
       clientKey="paymentDescription"
     />
-    <TextInput
-      label="Invoice Number"
-      placeholder={format(new Date(), "yMMdd-01")}
-      clientKey="invoiceNumber"
-    />
-    <DateInput label="Issue Date" clientKey="issueDate" />
-    <DateInput label="Due Date" clientKey="dueDate" />
     <CurrencyInput label="Currency" clientKey="currency" />
     <NumberInput
       label="Discount"
@@ -61,6 +54,7 @@ const Form = () => (
       clientKey="paymentUrl"
     />
     <TextInput label="Note" placeholder="Add a note..." clientKey="note" />
+    <Switch label="Collect GST (10%)" clientKey="collectGST" />
   </>
 );
 
@@ -72,6 +66,7 @@ const Preview: React.FC<
   branchNumber,
   paymentDescription,
   paymentUrl,
+  collectGST,
   discount,
   note,
   isQuote,
@@ -80,7 +75,8 @@ const Preview: React.FC<
   const currency = useCurrency(),
     subtotal = calculateTotalAmount(useValue("items")),
     discountValue = discount ? (+discount) / 100 * -subtotal : 0,
-    total = subtotal + discountValue;
+    gstValue = collectGST ? (subtotal + discountValue) * 0.1 : 0,
+    total = subtotal + discountValue + gstValue;
   return (
     <div className="group cursor-pointer relative" onClick={onClick}>
       <Frame />
@@ -110,6 +106,15 @@ const Preview: React.FC<
                   </Value>
                 </Columns>
               </>
+            )}
+          {gstValue &&
+            (
+              <Columns className="py-3 border-b border-dashed">
+                <Subtitle>GST (10%)</Subtitle>
+                <Value className="text-right">
+                  {formatCurrencyValue(gstValue)}
+                </Value>
+              </Columns>
             )}
           <Columns className="items-center pt-3">
             <Subtitle>Total</Subtitle>
@@ -186,6 +191,7 @@ const PDF: React.FC<
   branchNumber,
   paymentDescription,
   paymentUrl,
+  collectGST,
   discount,
   isQuote,
   note,
@@ -193,7 +199,8 @@ const PDF: React.FC<
   const currency = useCurrency(),
     subtotal = calculateTotalAmount(useValue("items")),
     discountValue = discount ? (+discount) / 100 * -subtotal : 0,
-    total = subtotal + discountValue;
+    gstValue = collectGST ? (subtotal + discountValue) * 0.1 : 0,
+    total = subtotal + discountValue + gstValue;
   return (
     <>
       <View
@@ -245,6 +252,26 @@ const PDF: React.FC<
                     {formatCurrencyValue(discountValue)}
                   </Text>
                 </View>
+                {gstValue && (
+                  <View
+                    style={{
+                      ...pdfStyles.columns,
+                      borderBottom: pdfBorder,
+                      paddingVertical: 12,
+                    }}
+                  >
+                    <Text style={pdfStyles.subtitle}>GST (10%)</Text>
+                    <Text
+                      style={{
+                        ...pdfStyles.value,
+                        flex: 1,
+                        textAlign: "right",
+                      }}
+                    >
+                      {formatCurrencyValue(gstValue)}
+                    </Text>
+                  </View>
+                )}
               </>
             )}
           <View style={{ ...pdfStyles.columns, paddingTop: 12 }}>
@@ -297,7 +324,9 @@ const PDF: React.FC<
             </Link>
           </View>
         )}
-        <View style={{ display: "flex", flexDirection: "row", paddingBottom: 20 }}>
+        <View
+          style={{ display: "flex", flexDirection: "row", paddingBottom: 20 }}
+        >
           <View style={{ flex: 1, paddingHorizontal: 32 }}>
             {!isQuote && (
               <>

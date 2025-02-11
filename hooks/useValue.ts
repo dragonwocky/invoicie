@@ -38,17 +38,20 @@ const useInvoice = (): Invoice => {
       fromPostcode: useValue("fromPostcode"),
       fromABN: useValue("fromABN"),
     },
+    invoiceReference: InvoiceReference = {
+      invoiceNumber: useValue("invoiceNumber"),
+      issueDate: useValue("issueDate"),
+      dueDate: useValue("dueDate"),
+    },
     paymentDetails: PaymentDetails = {
       accountName: useValue("accountName"),
       accountNumber: useValue("accountNumber"),
       branchNumber: useValue("branchNumber"),
-      invoiceNumber: useValue("invoiceNumber"),
       paymentDescription: useValue("paymentDescription"),
       paymentUrl: useValue("paymentUrl"),
-      issueDate: useValue("issueDate"),
-      dueDate: useValue("dueDate"),
       currency: useValue("currency"),
       discount: useValue("discount"),
+      collectGST: useValue("collectGST"),
       note: useValue("note"),
     },
     invoiceItems = useValue<Item[]>("items"),
@@ -57,9 +60,10 @@ const useInvoice = (): Invoice => {
   return {
     invoicedTo,
     invoicedFrom,
+    invoiceReference,
     paymentDetails,
     invoiceItems,
-    isQuote
+    isQuote,
   };
 };
 

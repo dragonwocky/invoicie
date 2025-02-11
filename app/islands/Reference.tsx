@@ -1,8 +1,11 @@
 "use client";
 
+import { Text, View } from "@react-pdf/renderer";
 import { format } from "date-fns";
 import React from "react";
 
+import { DateInput } from "@/components/form/DateInput.tsx";
+import { TextInput } from "@/components/form/TextInput.tsx";
 import {
   Columns,
   Frame,
@@ -12,10 +15,21 @@ import {
   Title,
   Value,
 } from "@/components/Typography.tsx";
-import { Text, View } from "@react-pdf/renderer";
+
+const Form = () => (
+  <>
+    <TextInput
+      label="Invoice Number"
+      placeholder={format(new Date(), "yMMdd-01")}
+      clientKey="invoiceNumber"
+    />
+    <DateInput label="Issue Date" clientKey="issueDate" />
+    <DateInput label="Due Date" clientKey="dueDate" />
+  </>
+);
 
 const Preview: React.FC<
-  PaymentDetails & { isQuote: boolean; onClick?: () => void }
+  InvoiceReference & { isQuote: boolean; onClick?: () => void }
 > = ({
   invoiceNumber,
   issueDate,
@@ -53,7 +67,7 @@ const Preview: React.FC<
   </Columns>
 );
 
-const PDF: React.FC<PaymentDetails & { isQuote: boolean }> = ({
+const PDF: React.FC<InvoiceReference & { isQuote: boolean }> = ({
   invoiceNumber,
   issueDate,
   dueDate,
@@ -93,4 +107,4 @@ const PDF: React.FC<PaymentDetails & { isQuote: boolean }> = ({
   </View>
 );
 
-export { PDF, Preview };
+export { Form, PDF, Preview };

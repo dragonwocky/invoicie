@@ -18,7 +18,7 @@ const Switch: FC<
     <Controller
       render={({ field: { onChange, value } }) => (
         <div
-          className="flex pt-6 gap-3 cursor-pointer"
+          className="flex py-3 gap-3 cursor-pointer"
           onClick={() => ref.current?.click()}
         >
           <SwitchPrimitives.Root

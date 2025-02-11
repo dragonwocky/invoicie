@@ -71,6 +71,7 @@ const PDF: React.FC<{ flagDataUri: string; breakPages: boolean }> = (
 
 const Download = () => {
   const flag = useFlag(),
+    isQuote = useValue("isQuote"),
     invoiceNumber = useValue("invoiceNumber"),
     breakPages = useValue<boolean>("breakPages"),
     [status, setStatus] = useState<
@@ -79,7 +80,7 @@ const Download = () => {
     [icon, title] = {
       "not-downloaded": [
         <DownloadIcon />,
-        "Download Invoice",
+        `Download ${isQuote ? "Quote" : "Invoice"}`,
       ],
       "downloading": [
         <LoaderIcon className="animate-spin" />,
@@ -97,15 +98,15 @@ const Download = () => {
 
   return (
     <>
-      <p className="text-neutral-500 text-base font-medium">
+      <p className="text-neutral-500 text-base font-medium mb-3">
         You're almost there! Please review entered details carefully before
         downloading your invoice.
       </p>
-      <Switch label="Download a quote" clientKey="isQuote" />
+      <Switch label="Prepare a quote" clientKey="isQuote" />
       <Switch label="Split pages for print" clientKey="breakPages" />
       <Button
         title="Download"
-        className="mt-6 w-full py-6 text-base"
+        className="mt-3 w-full py-6 text-base"
         disabled={status === "downloading"}
         onClick={async () => {
           try {

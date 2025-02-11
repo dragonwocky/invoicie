@@ -47,24 +47,29 @@ interface Item {
   price?: number;
 }
 
+interface InvoiceReference {
+  invoiceNumber?: string;
+  issueDate?: string;
+  dueDate?: string;
+}
+
 interface PaymentDetails {
   accountName?: string;
   accountNumber?: string;
   branchNumber?: string;
   paymentDescription?: string;
   paymentUrl?: string;
-  invoiceNumber?: string;
-  issueDate?: string;
-  dueDate?: string;
   currency?: string;
   discount?: string;
+  collectGST?: string;
   note?: string;
 }
 
 interface Invoice {
   invoicedTo: InvoicedTo;
   invoicedFrom: InvoicedFrom;
-  invoiceItems: Item[];
+  invoiceReference: InvoiceReference;
   paymentDetails: PaymentDetails;
+  invoiceItems: Item[];
   isQuote: boolean;
 }

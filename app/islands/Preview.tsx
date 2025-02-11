@@ -44,10 +44,10 @@ export const Preview = () => {
             <From.Preview onClick={() => onClick(0)} {...invoicedFrom} />
             <To.Preview onClick={() => onClick(1)} {...invoicedTo} />
           </Columns>
-          <Items.Preview items={invoiceItems} onClick={() => onClick(3)} />
+          <Items.Preview items={invoiceItems} onClick={() => onClick(4)} />
           <Payment.Preview
             isQuote={isQuote}
-            onClick={() => onClick(2)}
+            onClick={() => onClick(3)}
             {...paymentDetails}
           />
           {page !== 4 && (
@@ -55,7 +55,7 @@ export const Preview = () => {
               <Button
                 title="Download"
                 className="text-base"
-                onClick={() => onClick(4)}
+                onClick={() => onClick(5)}
               >
                 <Download />
                 <span>Review & Download</span>

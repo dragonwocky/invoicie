@@ -6,6 +6,7 @@ import { Controller } from "react-hook-form";
 import { Download } from "@/app/islands/Download.tsx";
 import * as From from "@/app/islands/From.tsx";
 import * as Items from "@/app/islands/Items.tsx";
+import * as Reference from "@/app/islands/Reference.tsx";
 import * as Payment from "@/app/islands/Payment.tsx";
 import * as To from "@/app/islands/To.tsx";
 import { setClientValue } from "@/hooks/useClientValue.ts";
@@ -86,6 +87,7 @@ const Form = () => {
         {[
           <From.Form />,
           <To.Form />,
+          <Reference.Form />,
           <Payment.Form />,
           <Items.Form />,
           <Download />,
