@@ -92,30 +92,33 @@ const Preview: React.FC<
         <div className="px-8">
           {subtotal !== total &&
             (
-              <>
-                <Columns className="py-3 border-b border-dashed">
-                  <Subtitle>Subtotal</Subtitle>
-                  <Value className="text-right">
-                    {formatCurrencyValue(subtotal)}
-                  </Value>
-                </Columns>
-                <Columns className="py-3 border-b border-dashed">
-                  <Subtitle>Discount ({discount}%)</Subtitle>
-                  <Value className="text-right">
-                    {formatCurrencyValue(discountValue)}
-                  </Value>
-                </Columns>
-              </>
+              <Columns className="py-3 border-b border-dashed">
+                <Subtitle>Subtotal</Subtitle>
+                <Value className="text-right">
+                  {formatCurrencyValue(subtotal)}
+                </Value>
+              </Columns>
             )}
-          {gstValue &&
-            (
+          {discountValue
+            ? (
+              <Columns className="py-3 border-b border-dashed">
+                <Subtitle>Discount ({discount}%)</Subtitle>
+                <Value className="text-right">
+                  {formatCurrencyValue(discountValue)}
+                </Value>
+              </Columns>
+            )
+            : ""}
+          {gstValue
+            ? (
               <Columns className="py-3 border-b border-dashed">
                 <Subtitle>GST (10%)</Subtitle>
                 <Value className="text-right">
                   {formatCurrencyValue(gstValue)}
                 </Value>
               </Columns>
-            )}
+            )
+            : ""}
           <Columns className="items-center pt-3">
             <Subtitle>Total</Subtitle>
             <Value className="text-right font-bold text-base">
@@ -221,59 +224,62 @@ const PDF: React.FC<
           )}
         </View>
         <View style={{ flex: 1, paddingHorizontal: 32 }}>
-          {subtotal !== total &&
-            (
-              <>
-                <View
+          {subtotal !== total && (
+            <View
+              style={{
+                ...pdfStyles.columns,
+                borderBottom: pdfBorder,
+                paddingVertical: 12,
+              }}
+            >
+              <Text style={pdfStyles.subtitle}>Subtotal</Text>
+              <Text
+                style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
+              >
+                {formatCurrencyValue(subtotal)}
+              </Text>
+            </View>
+          )}
+          {discountValue
+            ? (
+              <View
+                style={{
+                  ...pdfStyles.columns,
+                  borderBottom: pdfBorder,
+                  paddingVertical: 12,
+                }}
+              >
+                <Text style={pdfStyles.subtitle}>Discount ({discount}%)</Text>
+                <Text
+                  style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
+                >
+                  {formatCurrencyValue(discountValue)}
+                </Text>
+              </View>
+            )
+            : ""}
+          {gstValue
+            ? (
+              <View
+                style={{
+                  ...pdfStyles.columns,
+                  borderBottom: pdfBorder,
+                  paddingVertical: 12,
+                }}
+              >
+                <Text style={pdfStyles.subtitle}>GST (10%)</Text>
+                <Text
                   style={{
-                    ...pdfStyles.columns,
-                    borderBottom: pdfBorder,
-                    paddingVertical: 12,
+                    ...pdfStyles.value,
+                    flex: 1,
+                    textAlign: "right",
                   }}
                 >
-                  <Text style={pdfStyles.subtitle}>Subtotal</Text>
-                  <Text
-                    style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
-                  >
-                    {formatCurrencyValue(subtotal)}
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    ...pdfStyles.columns,
-                    borderBottom: pdfBorder,
-                    paddingVertical: 12,
-                  }}
-                >
-                  <Text style={pdfStyles.subtitle}>Discount ({discount}%)</Text>
-                  <Text
-                    style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
-                  >
-                    {formatCurrencyValue(discountValue)}
-                  </Text>
-                </View>
-                {gstValue && (
-                  <View
-                    style={{
-                      ...pdfStyles.columns,
-                      borderBottom: pdfBorder,
-                      paddingVertical: 12,
-                    }}
-                  >
-                    <Text style={pdfStyles.subtitle}>GST (10%)</Text>
-                    <Text
-                      style={{
-                        ...pdfStyles.value,
-                        flex: 1,
-                        textAlign: "right",
-                      }}
-                    >
-                      {formatCurrencyValue(gstValue)}
-                    </Text>
-                  </View>
-                )}
-              </>
-            )}
+                  {formatCurrencyValue(gstValue)}
+                </Text>
+              </View>
+            )
+            : ""}
           <View style={{ ...pdfStyles.columns, paddingTop: 12 }}>
             <Text style={pdfStyles.subtitle}>Total</Text>
             <Text
