@@ -18,6 +18,7 @@ export const Preview = () => {
     invoicedTo,
     invoicedFrom,
     invoiceItems,
+    invoiceReference,
     paymentDetails,
     isQuote,
   } = useInvoice();
@@ -38,7 +39,7 @@ export const Preview = () => {
           <Reference.Preview
             isQuote={isQuote}
             onClick={() => onClick(2)}
-            {...paymentDetails}
+            {...invoiceReference}
           />
           <Columns className="border-b border-dashed">
             <From.Preview onClick={() => onClick(0)} {...invoicedFrom} />

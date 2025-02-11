@@ -42,13 +42,14 @@ const PDF: React.FC<{ flagDataUri: string; breakPages: boolean }> = (
     invoicedTo,
     invoicedFrom,
     invoiceItems,
+    invoiceReference,
     paymentDetails,
     isQuote,
   } = useInvoice();
   return (
     <Document>
       <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages}>
-        <Reference.PDF isQuote={isQuote} {...paymentDetails} />
+        <Reference.PDF isQuote={isQuote} {...invoiceReference} />
         <View
           style={{
             ...pdfStyles.columns,
