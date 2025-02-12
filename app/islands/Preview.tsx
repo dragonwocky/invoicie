@@ -34,7 +34,7 @@ export const Preview = () => {
           </Columns>
           <Items.Preview onClick={() => onClick(4)} />
           <Payment.Preview onClick={() => onClick(3)} />
-          {page !== 4 && (
+          {page !== 5 && (
             <div className="absolute inset-x-0 bottom-0 md:bottom-8 w-full flex justify-center">
               <Button
                 title="Download"

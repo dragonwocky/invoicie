@@ -38,7 +38,7 @@ const PDF = () => {
   const breakPages = useValue<boolean>("breakPages");
   return (
     <Document>
-      <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages}>
+      <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages || false}>
         <Reference.PDF />
         <View
           style={{
