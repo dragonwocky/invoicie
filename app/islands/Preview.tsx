@@ -22,10 +22,10 @@ export const Preview = () => {
     };
 
   return (
-    <div className="relative md:min-h-screen h-full w-full flex justify-center items-center p-4 md:p-0">
+    <div className="relative md:min-h-screen h-full w-full flex justify-center items-center p-4 overflow-x-hidden">
       <div className="absolute inset-0 -z-10 h-full w-full bg-[radial-gradient(#e5e7eb_1px,transparent_1px)] [background-size:16px_16px]">
       </div>
-      <div className="max-md:[zoom:0.6] overflow-auto md:overflow-x-hidden bg-white rounded-2xl border border-dashed justify-center">
+      <div className="max-md:[zoom:0.6] overflow-auto bg-white rounded-2xl border border-dashed justify-center">
         <div className="w-[595px] h-[842px]">
           <Reference.Preview onClick={() => onClick(2)} />
           <Columns className="border-b border-dashed">

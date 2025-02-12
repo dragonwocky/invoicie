@@ -140,7 +140,7 @@ const Export = () => {
 const Form = () => {
   const page = usePage();
   return (
-    <div className="w-full max-w-lg md:max-h-screen md:h-screen md:overflow-x-hidden px-4 md:px-12 py-12 border-r border-dashed flex flex-col justify-between">
+    <div className="w-full max-w-lg md:min-w-96 md:max-h-screen md:h-screen md:overflow-x-hidden px-4 md:px-12 py-12 border-r border-dashed flex flex-col justify-between">
       <div className="text-sm">
         <div className="flex justify-around md:justify-between">
           <div className="flex items-center gap-2">

@@ -19,10 +19,10 @@ const Title = twStyle("text-[11px] font-bold uppercase mb-1 text-neutral-400"),
   Skeleton = twStyle("shrink-0 rounded-md bg-neutral-100 animate-pulse"),
   Frame = () => (
     <>
-      <ChevronDown className="animate-pulse w-5 h-5 text-primary rotate-[135deg] group-hover:block hidden absolute top-0 left-0" />
-      <ChevronDown className="animate-pulse w-5 h-5 text-primary -rotate-[135deg] group-hover:block hidden absolute top-0 right-0" />
-      <ChevronDown className="animate-pulse w-5 h-5 text-primary rotate-45 group-hover:block hidden absolute bottom-0 left-0" />
-      <ChevronDown className="animate-pulse w-5 h-5 text-primary -rotate-45 group-hover:block hidden absolute bottom-0 right-0 " />
+      <ChevronDown className="animate-pulse w-5 h-5 text-primary rotate-[135deg] group-hover:block hidden absolute top-1.5 left-1.5" />
+      <ChevronDown className="animate-pulse w-5 h-5 text-primary -rotate-[135deg] group-hover:block hidden absolute top-1.5 right-1.5" />
+      <ChevronDown className="animate-pulse w-5 h-5 text-primary rotate-45 group-hover:block hidden absolute bottom-1.5 left-1.5" />
+      <ChevronDown className="animate-pulse w-5 h-5 text-primary -rotate-45 group-hover:block hidden absolute bottom-1.5 right-1.5 " />
     </>
   );
 

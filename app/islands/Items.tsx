@@ -34,6 +34,7 @@ const Form: React.FC = () => {
                 <div className="w-full flex-1">
                   <Input
                     type="text"
+                    className="mr-3"
                     value={description}
                     placeholder="Item description"
                     onChange={(e) => {
