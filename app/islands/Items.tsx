@@ -200,7 +200,7 @@ const PDF: React.FC = () => {
         }}
       >
         <View style={{ ...pdfStyles.columns, flex: 1, marginRight: 32 }}>
-          <Text style={{ ...pdfStyles.title, flex: 1 }}>Description</Text>
+          <Text style={{ ...pdfStyles.title, flex: 4 }}>Description</Text>
           <Text style={{ ...pdfStyles.title, flex: 1, textAlign: "right" }}>
             Qty
           </Text>
@@ -225,7 +225,7 @@ const PDF: React.FC = () => {
             }}
           >
             <View style={{ ...pdfStyles.columns, flex: 1, marginRight: 32 }}>
-              <Text style={{ ...pdfStyles.value, flex: 1 }}>
+              <Text style={{ ...pdfStyles.value, flex: 4 }}>
                 {item.description}
               </Text>
               <Text
