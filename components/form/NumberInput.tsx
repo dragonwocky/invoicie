@@ -8,11 +8,10 @@ type NumberInputProps = {
   label?: string;
   placeholder: string;
   clientKey: string;
-  percent?: boolean;
 };
 
 const NumberInput = (
-  { label, placeholder, clientKey, percent }: NumberInputProps,
+  { label, placeholder, clientKey }: NumberInputProps,
 ) => (
   <Controller
     render={({ field: { onChange, value } }) => (
@@ -36,12 +35,10 @@ const NumberInput = (
             }
             let number = +e.target.value;
             if (isNaN(number)) number = 0;
-            if (percent) number = Math.max(0, Math.min(100, number));
             setClientValue(clientKey, number);
             onChange(number);
           }}
         />
-        {percent && <span className="ml-2 text-gray-400">%</span>}
       </div>
     )}
     defaultValue={useClientValue(clientKey, "")}

@@ -15,6 +15,7 @@ interface Party {
 
 interface Item {
   description: string;
+  discount?: number;
   quantity?: number;
   price?: number;
 }
@@ -51,7 +52,6 @@ interface Invoice {
   paymentDescription?: string;
   paymentUrl?: string;
   currency?: string;
-  discount?: string;
   collectGST?: string;
   note?: string;
   items?: Item[];

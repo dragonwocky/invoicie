@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import React from "react";
 
 import { CurrencyInput } from "@/components/form/CurrencyInput.tsx";
-import { NumberInput } from "@/components/form/NumberInput.tsx";
 import { Switch } from "@/components/form/Switch.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import {
@@ -21,7 +20,7 @@ import {
 } from "@/components/Typography.tsx";
 import { useCurrency } from "@/hooks/useCurrency.ts";
 import { useInvoice, useValue } from "@/hooks/useValue.ts";
-import { calculateTotalAmount, formatCurrencyValue } from "@/lib/utils.ts";
+import { calculateTotal, formatCurrencyValue } from "@/lib/utils.ts";
 
 const Form: React.FC = () => (
   <>
@@ -42,12 +41,6 @@ const Form: React.FC = () => (
       clientKey="paymentDescription"
     />
     <CurrencyInput label="Currency" clientKey="currency" />
-    <NumberInput
-      label="Discount"
-      placeholder="0"
-      clientKey="discount"
-      percent
-    />
     <TextInput
       label="URL"
       placeholder="https://checkout.stripe.com/..."
@@ -66,15 +59,13 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       paymentDescription,
       paymentUrl,
       collectGST,
-      discount,
       note,
       isQuote,
     } = useInvoice(),
     currency = useCurrency(),
-    subtotal = calculateTotalAmount(useValue("items")),
-    discountValue = discount ? (+discount) / 100 * -subtotal : 0,
-    gstValue = collectGST ? (subtotal + discountValue) * 0.1 : 0,
-    total = subtotal + discountValue + gstValue;
+    subtotal = calculateTotal(useValue("items")),
+    gstValue = collectGST ? subtotal * 0.1 : 0,
+    total = subtotal + gstValue;
   return (
     <div className="group cursor-pointer relative" onClick={onClick}>
       <Frame />
@@ -97,16 +88,6 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
                 </Value>
               </Columns>
             )}
-          {discountValue
-            ? (
-              <Columns className="py-3 border-b border-dashed">
-                <Subtitle>Discount ({discount}%)</Subtitle>
-                <Value className="text-right">
-                  {formatCurrencyValue(discountValue)}
-                </Value>
-              </Columns>
-            )
-            : ""}
           {gstValue
             ? (
               <Columns className="py-3 border-b border-dashed">
@@ -191,15 +172,13 @@ const PDF: React.FC = () => {
       paymentDescription,
       paymentUrl,
       collectGST,
-      discount,
       isQuote,
       note,
     } = useInvoice(),
     currency = useCurrency(),
-    subtotal = calculateTotalAmount(useValue("items")),
-    discountValue = discount ? (+discount) / 100 * -subtotal : 0,
-    gstValue = collectGST ? (subtotal + discountValue) * 0.1 : 0,
-    total = subtotal + discountValue + gstValue;
+    subtotal = calculateTotal(useValue("items")),
+    gstValue = collectGST ? subtotal * 0.1 : 0,
+    total = subtotal + gstValue;
   return (
     <>
       <View
@@ -236,24 +215,6 @@ const PDF: React.FC = () => {
               </Text>
             </View>
           )}
-          {discountValue
-            ? (
-              <View
-                style={{
-                  ...pdfStyles.columns,
-                  borderBottom: pdfBorder,
-                  paddingVertical: 12,
-                }}
-              >
-                <Text style={pdfStyles.subtitle}>Discount ({discount}%)</Text>
-                <Text
-                  style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
-                >
-                  {formatCurrencyValue(discountValue)}
-                </Text>
-              </View>
-            )
-            : ""}
           {gstValue
             ? (
               <View

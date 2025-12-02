@@ -16,18 +16,18 @@ const addCommasToNumber = (number: number): string => {
     const str = useCurrency().symbol + parts.join(".");
     return number < 0 ? `(${str})` : str;
   },
-  calculateTotalAmount = (items: Item[]): number =>
+  calculateSubtotal = (item: Item): number =>
+    (item.quantity || 0) * (item.price || 0) *
+    (1 - ((item.discount || 0) / 100)),
+  calculateTotal = (items: Item[]): number =>
     Array.isArray(items)
-      ? items.reduce((total, item) => {
-        const quantity = item.quantity ? +item.quantity : 0,
-          price = item.price ? +item.price : 0;
-        return total + quantity * price;
-      }, 0)
+      ? items.reduce((total, item) => total + calculateSubtotal(item), 0)
       : 0;
 
 export {
   addCommasToNumber,
-  calculateTotalAmount,
+  calculateSubtotal,
+  calculateTotal,
   cn,
   formatCurrencyValue,
 };

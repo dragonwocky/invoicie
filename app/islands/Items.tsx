@@ -16,7 +16,11 @@ import {
 } from "@/components/Typography.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 import { useCurrency } from "@/hooks/useCurrency.ts";
-import { addCommasToNumber, formatCurrencyValue } from "@/lib/utils.ts";
+import {
+  addCommasToNumber,
+  calculateSubtotal,
+  formatCurrencyValue,
+} from "@/lib/utils.ts";
 import { useValue } from "@/hooks/useValue.ts";
 
 const Form: React.FC = () => {
@@ -26,7 +30,7 @@ const Form: React.FC = () => {
       render={({ field: { onChange, value } }) => (
         <>
           {value.map(
-            ({ description, quantity, price }: Item, index: number) => (
+            (item: Item, index: number) => (
               <div
                 key={index}
                 className="flex relative group md:-mr-10"
@@ -35,12 +39,12 @@ const Form: React.FC = () => {
                   <Input
                     type="text"
                     className="mr-3"
-                    value={description}
+                    value={item.description}
                     placeholder="Item description"
                     onChange={(e) => {
                       const items = [...value],
                         description = e.target.value;
-                      items[index] = { description, quantity, price };
+                      items[index] = { ...item, description };
                       setClientValue("items", items);
                       onChange(items);
                     }}
@@ -50,7 +54,7 @@ const Form: React.FC = () => {
                   <span className="absolute text-gray-400">#</span>
                   <Input
                     type="number"
-                    value={quantity ?? ""}
+                    value={item.quantity ?? ""}
                     className="pl-4 w-16"
                     placeholder="Qty"
                     onChange={(e) => {
@@ -58,8 +62,8 @@ const Form: React.FC = () => {
                       if (e.target.value !== "") {
                         let quantity = Math.max(+e.target.value, 0);
                         if (isNaN(quantity)) quantity = 0;
-                        items[index] = { description, quantity, price };
-                      } else items[index] = { description, price };
+                        items[index] = { ...item, quantity };
+                      } else items[index] = { ...item, quantity: undefined };
                       setClientValue("items", items);
                       onChange(items);
                     }}
@@ -71,7 +75,7 @@ const Form: React.FC = () => {
                   </span>
                   <Input
                     type="number"
-                    value={price ?? ""}
+                    value={item.price ?? ""}
                     className="pl-4 w-16"
                     placeholder="Price"
                     onChange={(e) => {
@@ -79,12 +83,32 @@ const Form: React.FC = () => {
                       if (e.target.value !== "") {
                         let price = +e.target.value;
                         if (isNaN(price)) price = 0;
-                        items[index] = { description, quantity, price };
-                      } else items[index] = { description, quantity };
+                        items[index] = { ...item, price };
+                      } else items[index] = { ...item, price: undefined };
                       setClientValue("items", items);
                       onChange(items);
                     }}
                   />
+                </div>
+                <div className="relative flex gap-2">
+                  <Input
+                    type="number"
+                    value={item.discount ?? ""}
+                    className="pr-4 w-16"
+                    placeholder="Disc."
+                    onChange={(e) => {
+                      const items = [...value];
+                      if (e.target.value !== "") {
+                        let discount = +e.target.value;
+                        if (isNaN(discount)) discount = 0;
+                        discount = Math.max(0, Math.min(100, discount));
+                        items[index] = { ...item, discount };
+                      } else items[index] = { ...item, discount: undefined };
+                      setClientValue("items", items);
+                      onChange(items);
+                    }}
+                  />
+                  <span className="absolute right-0 text-gray-400">%</span>
                 </div>
                 <div className="ml-2 -mt-1 w-8">
                   <button
@@ -132,22 +156,30 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     <div className="group cursor-pointer relative pt-4" onClick={onClick}>
       <Frame />
       <Columns className="mx-8 pb-2 border-b border-dashed">
-        <Title className="mr-8">Description</Title>
+        <Columns className="mr-8 grid-cols-5">
+          <Title className="col-span-4">Description</Title>
+          <Title className="text-right">Qty</Title>
+        </Columns>
         <Columns className="grid-cols-3 ml-8">
-          <Title>Qty</Title>
           <Title>Price</Title>
-          <Title className="text-right">Amount</Title>
+          <Title className="pr-4">Discount</Title>
+          <Title className="text-right">Subtotal</Title>
         </Columns>
       </Columns>
       {Array.isArray(items) &&
-        items.map(({ description, quantity, price }, index) => (
+        items.map((item, index) => (
           <Columns key={index} className="mx-8 py-3 border-b border-dashed">
-            <Value className="mr-8">{description}</Value>
-            <Columns className="grid-cols-3 ml-8">
-              <Value>{addCommasToNumber(quantity || 0)}</Value>
-              <Value>{formatCurrencyValue(price || 0)}</Value>
+            <Columns className="mr-8 grid-cols-5">
+              <Value className="col-span-4">{item.description}</Value>
               <Value className="text-right">
-                {formatCurrencyValue((quantity || 0) * (price || 0))}
+                {addCommasToNumber(item.quantity || 0)}
+              </Value>
+            </Columns>
+            <Columns className="grid-cols-3 ml-8">
+              <Value>{formatCurrencyValue(item.price || 0)}</Value>
+              <Value>{item.discount ? `${item.discount}%` : "-"}</Value>
+              <Value className="text-right">
+                {formatCurrencyValue(calculateSubtotal(item))}
               </Value>
             </Columns>
           </Columns>
@@ -167,19 +199,22 @@ const PDF: React.FC = () => {
           paddingBottom: 8,
         }}
       >
-        <Text style={{ ...pdfStyles.title, flex: 1, marginRight: 32 }}>
-          Description
-        </Text>
-        <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
-          <Text style={{ ...pdfStyles.title, flex: 1 }}>Qty</Text>
-          <Text style={{ ...pdfStyles.title, flex: 1 }}>Price</Text>
+        <View style={{ ...pdfStyles.columns, flex: 1, marginRight: 32 }}>
+          <Text style={{ ...pdfStyles.title, flex: 1 }}>Description</Text>
           <Text style={{ ...pdfStyles.title, flex: 1, textAlign: "right" }}>
-            Amount
+            Qty
+          </Text>
+        </View>
+        <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
+          <Text style={{ ...pdfStyles.title, flex: 1 }}>Price</Text>
+          <Text style={{ ...pdfStyles.title, flex: 1 }}>Discount</Text>
+          <Text style={{ ...pdfStyles.title, flex: 1, textAlign: "right" }}>
+            Subtotal
           </Text>
         </View>
       </View>
       {Array.isArray(items) &&
-        items.map(({ description, quantity, price }, index) => (
+        items.map((item, index) => (
           <View
             key={index}
             wrap={false}
@@ -189,18 +224,27 @@ const PDF: React.FC = () => {
               paddingVertical: 12,
             }}
           >
-            <Text style={{ ...pdfStyles.value, flex: 1, marginRight: 32 }}>
-              {description}
-            </Text>
+            <View style={{ ...pdfStyles.columns, flex: 1, marginRight: 32 }}>
+              <Text style={{ ...pdfStyles.value, flex: 1 }}>
+                {item.description}
+              </Text>
+              <Text
+                style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
+              >
+                {addCommasToNumber(item.quantity || 0)}
+              </Text>
+            </View>
             <View style={{ ...pdfStyles.columns, flex: 1, marginLeft: 32 }}>
               <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                {addCommasToNumber(quantity || 0)}
+                {formatCurrencyValue(item.price || 0)}
               </Text>
               <Text style={{ ...pdfStyles.value, flex: 1 }}>
-                {formatCurrencyValue(price || 0)}
+                {item.discount ? `${item.discount}%` : "-"}
               </Text>
-              <Text style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}>
-                {formatCurrencyValue((quantity || 0) * (price || 0))}
+              <Text
+                style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
+              >
+                {formatCurrencyValue(calculateSubtotal(item))}
               </Text>
             </View>
           </View>
