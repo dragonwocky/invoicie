@@ -43,8 +43,6 @@ const invoiceKeys = [
     "paymentDescription",
     "paymentUrl",
     "currency",
-    "discount",
-    "collectGST",
     "note",
     "items",
     "breakPages",

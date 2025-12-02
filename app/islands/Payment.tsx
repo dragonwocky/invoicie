@@ -47,7 +47,6 @@ const Form: React.FC = () => (
       clientKey="paymentUrl"
     />
     <TextInput label="Note" placeholder="Add a note..." clientKey="note" />
-    <Switch label="Collect GST (10%)" clientKey="collectGST" />
   </>
 );
 
@@ -58,14 +57,11 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       branchNumber,
       paymentDescription,
       paymentUrl,
-      collectGST,
       note,
       isQuote,
     } = useInvoice(),
     currency = useCurrency(),
-    subtotal = calculateTotal(useValue("items")),
-    gstValue = collectGST ? subtotal * 0.1 : 0,
-    total = subtotal + gstValue;
+    total = calculateTotal(useValue("items"));
   return (
     <div className="group cursor-pointer relative" onClick={onClick}>
       <Frame />
@@ -79,27 +75,8 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
           )}
         </div>
         <div className="px-8">
-          {subtotal !== total &&
-            (
-              <Columns className="py-3 border-b border-dashed">
-                <Subtitle>Subtotal</Subtitle>
-                <Value className="text-right">
-                  {formatCurrencyValue(subtotal)}
-                </Value>
-              </Columns>
-            )}
-          {gstValue
-            ? (
-              <Columns className="py-3 border-b border-dashed">
-                <Subtitle>GST (10%)</Subtitle>
-                <Value className="text-right">
-                  {formatCurrencyValue(gstValue)}
-                </Value>
-              </Columns>
-            )
-            : ""}
           <Columns className="items-center pt-3">
-            <Subtitle>Total</Subtitle>
+            <Title>Total</Title>
             <Value className="text-right font-bold text-base">
               {formatCurrencyValue(total)}
             </Value>
@@ -171,14 +148,11 @@ const PDF: React.FC = () => {
       branchNumber,
       paymentDescription,
       paymentUrl,
-      collectGST,
       isQuote,
       note,
     } = useInvoice(),
     currency = useCurrency(),
-    subtotal = calculateTotal(useValue("items")),
-    gstValue = collectGST ? subtotal * 0.1 : 0,
-    total = subtotal + gstValue;
+    total = calculateTotal(useValue("items"));
   return (
     <>
       <View
@@ -199,46 +173,8 @@ const PDF: React.FC = () => {
           )}
         </View>
         <View style={{ flex: 1, paddingHorizontal: 32 }}>
-          {subtotal !== total && (
-            <View
-              style={{
-                ...pdfStyles.columns,
-                borderBottom: pdfBorder,
-                paddingVertical: 12,
-              }}
-            >
-              <Text style={pdfStyles.subtitle}>Subtotal</Text>
-              <Text
-                style={{ ...pdfStyles.value, flex: 1, textAlign: "right" }}
-              >
-                {formatCurrencyValue(subtotal)}
-              </Text>
-            </View>
-          )}
-          {gstValue
-            ? (
-              <View
-                style={{
-                  ...pdfStyles.columns,
-                  borderBottom: pdfBorder,
-                  paddingVertical: 12,
-                }}
-              >
-                <Text style={pdfStyles.subtitle}>GST (10%)</Text>
-                <Text
-                  style={{
-                    ...pdfStyles.value,
-                    flex: 1,
-                    textAlign: "right",
-                  }}
-                >
-                  {formatCurrencyValue(gstValue)}
-                </Text>
-              </View>
-            )
-            : ""}
           <View style={{ ...pdfStyles.columns, paddingTop: 12 }}>
-            <Text style={pdfStyles.subtitle}>Total</Text>
+            <Text style={pdfStyles.title}>Total</Text>
             <Text
               style={{
                 ...pdfStyles.value,

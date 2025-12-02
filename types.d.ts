@@ -52,7 +52,6 @@ interface Invoice {
   paymentDescription?: string;
   paymentUrl?: string;
   currency?: string;
-  collectGST?: string;
   note?: string;
   items?: Item[];
   breakPages?: boolean;
