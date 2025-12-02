@@ -5,7 +5,6 @@ import { format } from "date-fns";
 import React from "react";
 
 import { CurrencyInput } from "@/components/form/CurrencyInput.tsx";
-import { Switch } from "@/components/form/Switch.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import {
   Columns,

@@ -59,13 +59,17 @@ const Preview: React.FC<Party & { onClick: () => void }> = ({
           ? <Value>{country}</Value>
           : <Skeleton className="h-4 mt-1 w-1/2" />}
       </div>
-      <Columns className="mb-1">
+      <Columns className="grid-cols-3">
         <Subtitle>Phone</Subtitle>
-        {phone ? <Value>{phone}</Value> : <Skeleton className="h-4 w-full" />}
+        {phone
+          ? <Value className="col-span-2">{phone}</Value>
+          : <Skeleton className="col-span-2 h-4 w-full" />}
       </Columns>
-      <Columns>
+      <Columns className="grid-cols-3">
         <Subtitle>Email</Subtitle>
-        {email ? <Value>{email}</Value> : <Skeleton className="h-4 w-full" />}
+        {email
+          ? <Value className="col-span-2">{email}</Value>
+          : <Skeleton className="col-span-2 h-4 w-full" />}
       </Columns>
     </div>
   );
@@ -125,14 +129,14 @@ const PDF: React.FC<Party> = ({
       (
         <View style={{ ...pdfStyles.columns, marginBottom: 1 }}>
           <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Phone</Text>
-          <Text style={{ ...pdfStyles.value, flex: 1 }}>{phone}</Text>
+          <Text style={{ ...pdfStyles.value, flex: 2 }}>{phone}</Text>
         </View>
       )}
     {email &&
       (
         <View style={pdfStyles.columns}>
           <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Email</Text>
-          <Text style={{ ...pdfStyles.value, flex: 1 }}>{email}</Text>
+          <Text style={{ ...pdfStyles.value, flex: 2 }}>{email}</Text>
         </View>
       )}
   </View>
