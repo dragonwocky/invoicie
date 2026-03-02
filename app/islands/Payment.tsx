@@ -69,7 +69,9 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
           {note && (
             <>
               <Title>Note</Title>
-              <Value>{note}</Value>
+              <Value className="whitespace-pre-line">
+                {note.replace(/\\n/g, "\n")}
+              </Value>
             </>
           )}
         </div>
@@ -167,7 +169,9 @@ const PDF: React.FC = () => {
           {note && (
             <>
               <Text style={pdfStyles.title}>Note</Text>
-              <Text style={pdfStyles.value}>{note}</Text>
+              {note.split("\\n").map((line, index) => (
+                <Text style={pdfStyles.value} key={index}>{line || " "}</Text>
+              ))}
             </>
           )}
         </View>

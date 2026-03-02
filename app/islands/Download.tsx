@@ -31,14 +31,19 @@ Font.register({
     "https://fonts.gstatic.com/s/geist/v1/gyBhhwUxId8gMGYQMKR3pzfaWI_Re-Q4nZPby1QNtA.ttf",
     "https://fonts.gstatic.com/s/geist/v1/gyBhhwUxId8gMGYQMKR3pzfaWI_RHOQ4nZPby1QNtA.ttf",
     "https://fonts.gstatic.com/s/geist/v1/gyBhhwUxId8gMGYQMKR3pzfaWI_RNeQ4nZPby1QNtA.ttf",
-  ].map((src, i) => ({ src, fontWeight: i * 100 + 100 })),
+  ].map((src, index) => ({ src, fontWeight: index * 100 + 100 })),
 });
 
 const PDF = () => {
   const breakPages = useValue<boolean>("breakPages");
   return (
     <Document>
-      <Page size="A4" style={{ fontFamily: "Geist" }} wrap={breakPages || false}>
+      <Page
+        size="A4"
+        style={{ fontFamily: "Geist" }}
+        wrap={breakPages || false}
+      >
+        <View fixed style={{ height: 16 }} />
         <Reference.PDF />
         <View
           style={{
@@ -61,13 +66,13 @@ const Download = () => {
     invoiceNumber = useValue("invoiceNumber"),
     [status, setStatus] = useState<0 | 1 | 2>(0),
     [icon, title] = [[
-      <DownloadIcon />,
+      <DownloadIcon key={0} />,
       `Download ${isQuote ? "Quote" : "Invoice"}`,
     ], [
-      <LoaderIcon className="animate-spin" />,
+      <LoaderIcon key={1} className="animate-spin" />,
       "Downloading...",
     ], [
-      <CheckCircle2 />,
+      <CheckCircle2 key={2} />,
       "Downloaded",
     ]][status];
   useEffect(() => {

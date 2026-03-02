@@ -79,7 +79,7 @@ const PDF: React.FC = () => {
     <View
       style={{
         ...pdfStyles.columns,
-        paddingVertical: 16,
+        paddingBottom: 16,
         borderBottom: pdfBorder,
       }}
     >

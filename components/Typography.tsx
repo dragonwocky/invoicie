@@ -35,25 +35,25 @@ const pdfStyles = StyleSheet.create({
       marginBottom: 4,
     },
     subtitle: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: "medium",
       color: colors.gray[500],
     },
     value: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: "medium",
       color: colors.gray[800],
     },
     subvalue: {
-      fontSize: 12,
+      fontSize: 11,
       fontWeight: "medium",
       color: colors.neutral[400],
     },
     columns: {
       display: "flex",
-      alignItems: "center",
+      alignItems: "flex-start",
       flexDirection: "row",
-    }
+    },
   }),
   pdfBorder = `1px dashed hsl(240 5.9% 90%)`;
 
@@ -66,6 +66,5 @@ export {
   Subtitle,
   Subvalue,
   Title,
-  Value
+  Value,
 };
-

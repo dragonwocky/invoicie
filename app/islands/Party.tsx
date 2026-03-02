@@ -94,6 +94,7 @@ const PDF: React.FC<Party> = ({
     <View
       style={{
         ...pdfStyles.columns,
+        alignItems: "center",
         marginTop: 8,
         marginBottom: 16,
         height: 48,
@@ -102,6 +103,7 @@ const PDF: React.FC<Party> = ({
       {logo && (
         <Image
           style={{
+            flex: 1,
             maxWidth: 40,
             maxHeight: 40,
             marginRight: 12,
@@ -110,7 +112,7 @@ const PDF: React.FC<Party> = ({
           src={logo}
         />
       )}
-      <View>
+      <View style={{ flex: 2 }}>
         {name && (
           <Text style={{ ...pdfStyles.value, fontWeight: "bold" }}>
             {name}
