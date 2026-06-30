@@ -94,8 +94,9 @@ const Download = () => {
         onClick={async () => {
           try {
             setStatus(1);
-            const blob = await pdf(<PDF />).toBlob();
-            saveAs(blob, `${invoiceNumber || "invoice"}.pdf`);
+            const blob = await pdf(<PDF />).toBlob(),
+              name = `${isQuote ? "QUOT" : "INV"}${invoiceNumber}.pdf` 
+            saveAs(blob, name);
             setStatus(2);
           } catch {
             setStatus(0);
