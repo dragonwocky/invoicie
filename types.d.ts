@@ -43,6 +43,7 @@ interface Invoice {
   toState?: string;
   toCountry?: string;
   toPostcode?: string;
+  customerCode?: string;
   invoiceNumber?: string;
   issueDate?: string;
   dueDate?: string;

@@ -34,6 +34,7 @@ const invoiceKeys = [
     "toState",
     "toCountry",
     "toPostcode",
+    "customerCode",
     "invoiceNumber",
     "issueDate",
     "dueDate",

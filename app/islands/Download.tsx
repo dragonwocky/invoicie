@@ -17,7 +17,8 @@ import * as To from "@/app/islands/To.tsx";
 import { Switch } from "@/components/form/Switch.tsx";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useValue } from "@/hooks/useValue.ts";
+import { useInvoice, useValue } from "@/hooks/useValue.ts";
+import { format } from "date-fns";
 
 Font.register({
   family: "Geist",
@@ -62,8 +63,12 @@ const PDF = () => {
 };
 
 const Download = () => {
-  const isQuote = useValue<boolean>("isQuote"),
-    invoiceNumber = useValue("invoiceNumber"),
+  const {
+      isQuote,
+      invoiceNumber,
+      issueDate,
+      customerCode,
+    } = useInvoice(),
     [status, setStatus] = useState<0 | 1 | 2>(0),
     [icon, title] = [[
       <DownloadIcon key={0} />,
@@ -95,7 +100,9 @@ const Download = () => {
           try {
             setStatus(1);
             const blob = await pdf(<PDF />).toBlob(),
-              name = `${isQuote ? "QUOT" : "INV"}${invoiceNumber}.pdf` 
+              name = `${isQuote ? "QUOT" : "INV"}${
+                issueDate ? `${format(issueDate, "yyyyMMdd")}-` : ""
+              }${customerCode ? `${customerCode}-` : ""}${invoiceNumber}.pdf`;
             saveAs(blob, name);
             setStatus(2);
           } catch {

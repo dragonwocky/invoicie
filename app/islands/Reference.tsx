@@ -20,8 +20,13 @@ import { useInvoice } from "@/hooks/useValue.ts";
 const Form: React.FC = () => (
   <>
     <TextInput
+      label="Customer Code"
+      placeholder="CUST"
+      clientKey="customerCode"
+    />
+    <TextInput
       label="Invoice Number"
-      placeholder={format(new Date(), "yMMdd-01")}
+      placeholder="01"
       clientKey="invoiceNumber"
     />
     <DateInput label="Issue Date" clientKey="issueDate" />
@@ -31,6 +36,7 @@ const Form: React.FC = () => (
 
 const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
   const {
+    customerCode,
     invoiceNumber,
     issueDate,
     dueDate,
@@ -45,7 +51,14 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       <div className="px-8">
         <Title>{isQuote ? "Quote" : "Invoice"} No</Title>
         {invoiceNumber
-          ? <Value>{invoiceNumber}</Value>
+          ? (
+            <Value>
+              {isQuote ? "QUOT" : "INV"}
+              {issueDate && `${format(issueDate, "yyyyMMdd")}-`}
+              {customerCode && `${customerCode}-`}
+              {invoiceNumber}
+            </Value>
+          )
           : <Skeleton className="h-4 w-full" />}
       </div>
       <Columns className="px-8">
@@ -70,6 +83,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
 
 const PDF: React.FC = () => {
   const {
+    customerCode,
     invoiceNumber,
     issueDate,
     dueDate,
@@ -85,7 +99,14 @@ const PDF: React.FC = () => {
     >
       <View style={{ flex: 1, paddingHorizontal: 32 }}>
         <Text style={pdfStyles.title}>{isQuote ? "Quote" : "Invoice"} No</Text>
-        {invoiceNumber && <Text style={pdfStyles.value}>{invoiceNumber}</Text>}
+        {invoiceNumber && (
+          <Text style={pdfStyles.value}>
+            {isQuote ? "QUOT" : "INV"}
+            {issueDate && `${format(issueDate, "yyyyMMdd")}-`}
+            {customerCode && `${customerCode}-`}
+            {invoiceNumber}
+          </Text>
+        )}
       </View>
       <View style={{ ...pdfStyles.columns, flex: 1, paddingHorizontal: 32 }}>
         <View style={{ flex: 1, marginRight: 8 }}>
