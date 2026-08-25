@@ -17,17 +17,11 @@ const addCommasToNumber = (number: number): string => {
     return number < 0 ? `(${str})` : str;
   },
   calculateSubtotal = (item: Item): number =>
-    (item.quantity || 0) * (item.price || 0) *
-    (1 - ((item.discount || 0) / 100)),
+    (item.quantity || 0) * (item.price || 0)
+    * (1 - ((item.discount || 0) / 100)),
   calculateTotal = (items: Item[]): number =>
     Array.isArray(items)
       ? items.reduce((total, item) => total + calculateSubtotal(item), 0)
       : 0;
 
-export {
-  addCommasToNumber,
-  calculateSubtotal,
-  calculateTotal,
-  cn,
-  formatCurrencyValue,
-};
+export { addCommasToNumber, calculateSubtotal, calculateTotal, cn, formatCurrencyValue };

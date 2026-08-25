@@ -7,9 +7,7 @@ import colors from "tailwindcss/colors";
 const twStyle = (
   defaultClassName: string,
 ): FC<ComponentProps<"div">> =>
-({ className, children, ...props }) => (
-  <div className={cn(defaultClassName, className)} {...props}>{children}</div>
-);
+({ className, children, ...props }) => <div className={cn(defaultClassName, className)} {...props}>{children}</div>;
 
 const Title = twStyle("text-[11px] font-bold uppercase mb-1 text-neutral-400"),
   Subtitle = twStyle("shrink-0 text-xs font-medium text-gray-500"),
@@ -57,14 +55,4 @@ const pdfStyles = StyleSheet.create({
   }),
   pdfBorder = `1px dashed hsl(240 5.9% 90%)`;
 
-export {
-  Columns,
-  Frame,
-  pdfBorder,
-  pdfStyles,
-  Skeleton,
-  Subtitle,
-  Subvalue,
-  Title,
-  Value,
-};
+export { Columns, Frame, pdfBorder, pdfStyles, Skeleton, Subtitle, Subvalue, Title, Value };

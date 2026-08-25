@@ -36,9 +36,8 @@ const currencies: {
     },
   ],
   useCurrency = (shortcode = useValue("currency")) => {
-    return currencies.find((currency) =>
-      currency.shortcode.toLowerCase() === shortcode?.toLowerCase()
-    ) || currencies[0];
+    return currencies.find((currency) => currency.shortcode.toLowerCase() === shortcode?.toLowerCase())
+      || currencies[0];
   };
 
 export { currencies, useCurrency };

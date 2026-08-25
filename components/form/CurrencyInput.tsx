@@ -4,18 +4,8 @@ import { CheckCircle2 } from "lucide-react";
 import { useState } from "react";
 import { Controller } from "react-hook-form";
 
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-} from "@/components/ui/command.tsx";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover.tsx";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command.tsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 import { currencies, useCurrency } from "@/hooks/useCurrency.ts";
 
@@ -33,8 +23,7 @@ const CurrencyInput = ({ label, clientKey }: CurrencyInputProps) => {
         return (
           <Popover onOpenChange={setOpen} open={open}>
             <PopoverTrigger className="flex w-full mb-6 pb-2 border-b-2 border-dashed transition-colors focus-within:border-primary">
-              {label && <div className="shrink-0 mr-4 font-medium">{label}
-              </div>}
+              {label && <div className="shrink-0 mr-4 font-medium">{label}</div>}
               <div className="ml-auto flex gap-1.5 items-center pl-2 pr-2.5 py-0.5 bg-neutral-100 rounded-full">
                 <selected.Icon className="w-4 h-4 rounded-full" />
                 <p className="font-medium">{selected.shortcode}</p>

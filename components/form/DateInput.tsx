@@ -6,11 +6,7 @@ import { useState } from "react";
 import { Controller } from "react-hook-form";
 
 import { Calendar } from "@/components/ui/calendar.tsx";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover.tsx";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 
 type DateInputProps = {

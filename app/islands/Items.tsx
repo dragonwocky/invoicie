@@ -6,22 +6,11 @@ import React from "react";
 import { Controller } from "react-hook-form";
 
 import { Input } from "@/components/form/Input.tsx";
-import {
-  Columns,
-  Frame,
-  pdfBorder,
-  pdfStyles,
-  Title,
-  Value,
-} from "@/components/Typography.tsx";
+import { Columns, Frame, pdfBorder, pdfStyles, Title, Value } from "@/components/Typography.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 import { useCurrency } from "@/hooks/useCurrency.ts";
-import {
-  addCommasToNumber,
-  calculateSubtotal,
-  formatCurrencyValue,
-} from "@/lib/utils.ts";
 import { useValue } from "@/hooks/useValue.ts";
+import { addCommasToNumber, calculateSubtotal, formatCurrencyValue } from "@/lib/utils.ts";
 
 const Form: React.FC = () => {
   const currency = useCurrency();
@@ -166,8 +155,8 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
           <Title className="text-right">Subtotal</Title>
         </Columns>
       </Columns>
-      {Array.isArray(items) &&
-        items.map((item, index) => (
+      {Array.isArray(items)
+        && items.map((item, index) => (
           <Columns key={index} className="mx-8 py-3 border-b border-dashed">
             <Columns className="mr-8 grid-cols-5">
               <Value className="col-span-4">{item.description}</Value>
@@ -213,8 +202,8 @@ const PDF: React.FC = () => {
           </Text>
         </View>
       </View>
-      {Array.isArray(items) &&
-        items.map((item, index) => (
+      {Array.isArray(items)
+        && items.map((item, index) => (
           <View
             key={index}
             wrap={false}

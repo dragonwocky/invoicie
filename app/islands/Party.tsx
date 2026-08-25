@@ -2,16 +2,7 @@
 
 import { Image, Text, View } from "@react-pdf/renderer";
 
-import {
-  Columns,
-  Frame,
-  pdfStyles,
-  Skeleton,
-  Subtitle,
-  Subvalue,
-  Title,
-  Value,
-} from "@/components/Typography.tsx";
+import { Columns, Frame, pdfStyles, Skeleton, Subtitle, Subvalue, Title, Value } from "@/components/Typography.tsx";
 import { useShapeStyle } from "@/hooks/useShape.ts";
 
 const Preview: React.FC<Party & { onClick: () => void }> = ({
@@ -123,19 +114,19 @@ const PDF: React.FC<Party> = ({
     </View>
     <View style={{ marginBottom: 16 }}>
       {address && <Text style={pdfStyles.value}>{address}</Text>}
-      {(city || state || postcode) &&
-        <Text style={pdfStyles.value}>{city}, {state} {postcode}</Text>}
+      {(city || state || postcode)
+        && <Text style={pdfStyles.value}>{city}, {state} {postcode}</Text>}
       {country && <Text style={pdfStyles.value}>{country}</Text>}
     </View>
-    {phone &&
-      (
+    {phone
+      && (
         <View style={{ ...pdfStyles.columns, marginBottom: 1 }}>
           <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Phone</Text>
           <Text style={{ ...pdfStyles.value, flex: 2 }}>{phone}</Text>
         </View>
       )}
-    {email &&
-      (
+    {email
+      && (
         <View style={pdfStyles.columns}>
           <Text style={{ ...pdfStyles.subtitle, flex: 1 }}>Email</Text>
           <Text style={{ ...pdfStyles.value, flex: 2 }}>{email}</Text>

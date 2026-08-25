@@ -6,15 +6,7 @@ import React from "react";
 
 import { DateInput } from "@/components/form/DateInput.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
-import {
-  Columns,
-  Frame,
-  pdfBorder,
-  pdfStyles,
-  Skeleton,
-  Title,
-  Value,
-} from "@/components/Typography.tsx";
+import { Columns, Frame, pdfBorder, pdfStyles, Skeleton, Title, Value } from "@/components/Typography.tsx";
 import { useInvoice } from "@/hooks/useValue.ts";
 
 const Form: React.FC = () => (

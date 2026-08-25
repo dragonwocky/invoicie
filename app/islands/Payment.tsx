@@ -115,8 +115,8 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
                   ? <Value>{branchNumber}</Value>
                   : <Skeleton className="h-4 w-full" />}
               </Columns>
-              {paymentDescription &&
-                (
+              {paymentDescription
+                && (
                   <Columns className="mb-1">
                     <Subtitle>Description</Subtitle>
                     <Value>{paymentDescription}</Value>
@@ -169,9 +169,7 @@ const PDF: React.FC = () => {
           {note && (
             <>
               <Text style={pdfStyles.title}>Note</Text>
-              {note.split("\\n").map((line, index) => (
-                <Text style={pdfStyles.value} key={index}>{line || " "}</Text>
-              ))}
+              {note.split("\\n").map((line, index) => <Text style={pdfStyles.value} key={index}>{line || " "}</Text>)}
             </>
           )}
         </View>

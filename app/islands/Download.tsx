@@ -2,11 +2,7 @@
 
 import { Document, Font, Page, pdf, View } from "@react-pdf/renderer";
 import { saveAs } from "file-saver";
-import {
-  CheckCircle2,
-  Download as DownloadIcon,
-  LoaderIcon,
-} from "lucide-react";
+import { CheckCircle2, Download as DownloadIcon, LoaderIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 
 import * as From from "@/app/islands/From.tsx";
@@ -87,8 +83,7 @@ const Download = () => {
   return (
     <>
       <p className="text-neutral-500 text-base font-medium mb-3">
-        You're almost there! Please review entered details carefully before
-        downloading your invoice.
+        You're almost there! Please review entered details carefully before downloading your invoice.
       </p>
       <Switch label="Prepare a quote" clientKey="isQuote" />
       <Switch label="Split pages for print" clientKey="breakPages" />
@@ -100,9 +95,9 @@ const Download = () => {
           try {
             setStatus(1);
             const blob = await pdf(<PDF />).toBlob(),
-              name = `${isQuote ? "QUOT" : "INV"}${
-                issueDate ? `${format(issueDate, "yyyyMMdd")}-` : ""
-              }${customerCode ? `${customerCode}-` : ""}${invoiceNumber}.pdf`;
+              name = `${isQuote ? "QUOT" : "INV"}${issueDate ? `${format(issueDate, "yyyyMMdd")}-` : ""}${
+                customerCode ? `${customerCode}-` : ""
+              }${invoiceNumber}.pdf`;
             saveAs(blob, name);
             setStatus(2);
           } catch {

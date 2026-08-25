@@ -1,5 +1,5 @@
-import { useFormContext } from "react-hook-form";
 import { useClientValue } from "@/hooks/useClientValue.ts";
+import { useFormContext } from "react-hook-form";
 
 const useValue = <T = string>(clientKey: string): T => {
   const ctx = useFormContext(),
@@ -38,6 +38,7 @@ const invoiceKeys = [
     "invoiceNumber",
     "issueDate",
     "dueDate",
+    "paymentDate",
     "accountName",
     "accountNumber",
     "branchNumber",
