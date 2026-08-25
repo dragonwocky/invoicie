@@ -20,10 +20,16 @@ const useDocumentType = () => {
       issueDate = useValue<string>("issueDate"),
       paymentDate = useValue<string>("paymentDate"),
       customerCode = useValue<string>("customerCode"),
-      customerRef = useValue<string>("customerRef");
-    return `${useDocumentShort()}${issueDate ? `${format(isReceipt ? paymentDate : issueDate, "yyyyMMdd")}-` : ""}${
-      customerCode ? `${customerCode}-` : ""
-    }${customerRef}`;
+      customerRef = useValue<string>("customerRef"),
+      documentDate = isReceipt ? paymentDate : issueDate;
+    return `${useDocumentShort()}${
+      [
+        documentDate
+        && format(documentDate, "yyyyMMdd"),
+        customerCode,
+        customerRef,
+      ].filter(s => s).join("-")
+    }`;
   };
 
 export { useDocumentShort, useDocumentType, useReference };
