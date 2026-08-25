@@ -18,6 +18,7 @@ import {
   Value,
 } from "@/components/Typography.tsx";
 import { useCurrency } from "@/hooks/useCurrency.ts";
+import { useSvg } from "@/hooks/useSvg.ts";
 import { useInvoice, useValue } from "@/hooks/useValue.ts";
 import { calculateTotal, formatCurrencyValue } from "@/lib/utils.ts";
 
@@ -45,6 +46,7 @@ const Form: React.FC = () => (
       placeholder="https://checkout.stripe.com/..."
       clientKey="paymentUrl"
     />
+    <TextInput label="Receipt" placeholder="D123456789012" clientKey="paymentReceipt" />
     <TextInput label="Note" placeholder="Add a note..." clientKey="note" />
   </>
 );
@@ -56,8 +58,10 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       branchNumber,
       paymentDescription,
       paymentUrl,
+      paymentReceipt,
       note,
       isQuote,
+      isReceipt,
     } = useInvoice(),
     currency = useCurrency(),
     total = calculateTotal(useValue("items"));
@@ -84,7 +88,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
           </Columns>
         </div>
       </Columns>
-      {!isQuote && paymentUrl && (
+      {!isQuote && !isReceipt && paymentUrl && (
         <Columns className="grid-cols-4 pb-3">
           <Title className="pl-8 mb-0 mt-px">Pay Online</Title>
           <Value className="pr-8 col-span-3 underline truncate">
@@ -94,7 +98,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       )}
       <Columns className="pb-5">
         <div className="px-8">
-          {!isQuote && (
+          {!isQuote && !isReceipt && (
             <>
               <Title>Payment Details</Title>
               <Columns className="mb-1">
@@ -124,13 +128,26 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
                 )}
             </>
           )}
+          {isReceipt && (
+            <>
+              <Title>Paid With</Title>
+              {paymentReceipt
+                ? (
+                  <div>
+                    <Value>Direct Debit</Value>
+                    <Subvalue>{paymentReceipt}</Subvalue>
+                  </div>
+                )
+                : <img className="h-8" src="/stripe.svg"></img>}
+            </>
+          )}
         </div>
         <div className="px-8">
-          <Title>Payable In</Title>
+          <Title>{isReceipt ? "Paid In" : "Payable In"}</Title>
           <div className="flex gap-2 justify-between items-center w-full">
             <div className="flex gap-3 items-center">
               <currency.Icon className="w-8 h-8 shrink-0 rounded-full" />
-              <div>
+              <div className="pt-0.5">
                 <Value>{currency.name}</Value>
                 <Subvalue>{currency.symbol} {currency.shortcode}</Subvalue>
               </div>
@@ -149,9 +166,12 @@ const PDF: React.FC = () => {
       branchNumber,
       paymentDescription,
       paymentUrl,
+      paymentReceipt,
       isQuote,
+      isReceipt,
       note,
     } = useInvoice(),
+    stripeDataUri = useSvg("stripe"),
     currency = useCurrency(),
     total = calculateTotal(useValue("items"));
   return (
@@ -191,7 +211,7 @@ const PDF: React.FC = () => {
         </View>
       </View>
       <View wrap={false} style={{ marginTop: 16 }}>
-        {!isQuote && paymentUrl && (
+        {!isQuote && !isReceipt && paymentUrl && (
           <View
             style={{
               ...pdfStyles.columns,
@@ -228,7 +248,7 @@ const PDF: React.FC = () => {
           style={{ display: "flex", flexDirection: "row", paddingBottom: 20 }}
         >
           <View style={{ flex: 1, paddingHorizontal: 32 }}>
-            {!isQuote && (
+            {!isQuote && !isReceipt && (
               <>
                 <Text style={pdfStyles.title}>Payment Details</Text>
                 {accountName && (
@@ -271,9 +291,31 @@ const PDF: React.FC = () => {
                 )}
               </>
             )}
+            {isReceipt && (
+              <>
+                <Text style={pdfStyles.title}>Paid With</Text>
+                {paymentReceipt
+                  ? (
+                    <View>
+                      <Text style={pdfStyles.value}>
+                        Direct Debit
+                      </Text>
+                      <Text style={pdfStyles.subvalue}>
+                        {paymentReceipt}
+                      </Text>
+                    </View>
+                  )
+                  : (
+                    <Image
+                      src={stripeDataUri}
+                      style={{ height: 32, width: 76.2883 }}
+                    />
+                  )}
+              </>
+            )}
           </View>
           <View style={{ flex: 1, paddingHorizontal: 32 }}>
-            <Text style={pdfStyles.title}>Payable In</Text>
+            <Text style={pdfStyles.title}>{isReceipt ? "Paid In" : "Payable In"}</Text>
             <View style={pdfStyles.columns}>
               <Image
                 src={currency.flagDataUri}

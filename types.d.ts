@@ -44,17 +44,20 @@ interface Invoice {
   toCountry?: string;
   toPostcode?: string;
   customerCode?: string;
-  invoiceNumber?: string;
+  customerRef?: string;
   issueDate?: string;
+  paymentDate?: string;
   dueDate?: string;
   accountName?: string;
   accountNumber?: string;
   branchNumber?: string;
   paymentDescription?: string;
   paymentUrl?: string;
+  paymentReceipt?: string;
   currency?: string;
   note?: string;
   items?: Item[];
   breakPages?: boolean;
   isQuote?: boolean;
+  isReceipt?: boolean;
 }

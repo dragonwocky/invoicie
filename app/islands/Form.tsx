@@ -26,6 +26,7 @@ const PageBack = ({ fromPage }: { fromPage: number }) => {
         render={({ field: { onChange } }) => (
           <div className="mt-3 w-full flex flex-1">
             <button
+              type="button"
               className="flex-1 hover:bg-neutral-100 rounded-md p-3"
               onClick={() => [
                 setClientValue("page", fromPage - 1),
@@ -53,6 +54,7 @@ const PageBack = ({ fromPage }: { fromPage: number }) => {
         render={({ field: { onChange } }) => (
           <div className="mt-3 w-full flex flex-1">
             <button
+              type="button"
               className="flex-1 hover:bg-neutral-100 rounded-md p-3"
               onClick={() => [
                 setClientValue("page", fromPage + 1),
@@ -82,7 +84,7 @@ const Export = () => {
         onClick={() => {
           const document = JSON.stringify(invoice),
             blob = new Blob([document], { type: "application/json" });
-          saveAs(blob, `${invoice.invoiceNumber || "invoice"}.json`);
+          saveAs(blob, `${invoice.customerCode || "invoice"}.json`);
         }}
       >
         <DownloadIcon />

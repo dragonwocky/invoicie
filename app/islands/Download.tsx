@@ -13,8 +13,8 @@ import * as To from "@/app/islands/To.tsx";
 import { Switch } from "@/components/form/Switch.tsx";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useInvoice, useValue } from "@/hooks/useValue.ts";
-import { format } from "date-fns";
+import { useDocumentType, useReference } from "@/hooks/useReference.ts";
+import { useValue } from "@/hooks/useValue.ts";
 
 Font.register({
   family: "Geist",
@@ -59,23 +59,18 @@ const PDF = () => {
 };
 
 const Download = () => {
-  const {
-      isQuote,
-      invoiceNumber,
-      issueDate,
-      customerCode,
-    } = useInvoice(),
-    [status, setStatus] = useState<0 | 1 | 2>(0),
+  const [status, setStatus] = useState<0 | 1 | 2>(0),
     [icon, title] = [[
       <DownloadIcon key={0} />,
-      `Download ${isQuote ? "Quote" : "Invoice"}`,
+      `Download ${useDocumentType()}`,
     ], [
       <LoaderIcon key={1} className="animate-spin" />,
       "Downloading...",
     ], [
       <CheckCircle2 key={2} />,
       "Downloaded",
-    ]][status];
+    ]][status],
+    reference = useReference();
   useEffect(() => {
     if (status === 2) setTimeout(() => setStatus(0), 1000);
   }, [status]);
@@ -83,9 +78,10 @@ const Download = () => {
   return (
     <>
       <p className="text-neutral-500 text-base font-medium mb-3">
-        You're almost there! Please review entered details carefully before downloading your invoice.
+        You're almost there! Please review entered details carefully before downloading.
       </p>
-      <Switch label="Prepare a quote" clientKey="isQuote" />
+      <Switch label="Issue a quote" clientKey="isQuote" excludeKey="isReceipt" />
+      <Switch label="Issue a receipt" clientKey="isReceipt" excludeKey="isQuote" />
       <Switch label="Split pages for print" clientKey="breakPages" />
       <Button
         title="Download"
@@ -95,12 +91,11 @@ const Download = () => {
           try {
             setStatus(1);
             const blob = await pdf(<PDF />).toBlob(),
-              name = `${isQuote ? "QUOT" : "INV"}${issueDate ? `${format(issueDate, "yyyyMMdd")}-` : ""}${
-                customerCode ? `${customerCode}-` : ""
-              }${invoiceNumber}.pdf`;
+              name = `${reference}.pdf`;
             saveAs(blob, name);
             setStatus(2);
-          } catch {
+          } catch (err) {
+            console.error(err);
             setStatus(0);
           }
         }}

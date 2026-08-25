@@ -2,7 +2,7 @@
 
 import * as SwitchPrimitives from "@radix-ui/react-switch";
 import { ComponentPropsWithoutRef, FC, useRef } from "react";
-import { Controller } from "react-hook-form";
+import { Controller, useFormContext } from "react-hook-form";
 
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
 import { cn } from "@/lib/utils.ts";
@@ -11,9 +11,11 @@ const Switch: FC<
   ComponentPropsWithoutRef<typeof SwitchPrimitives.Root> & {
     label: string;
     clientKey: string;
+    excludeKey?: string;
   }
-> = ({ label, clientKey, className, ...props }) => {
-  const ref = useRef<HTMLButtonElement>(null);
+> = ({ label, clientKey, excludeKey, className, ...props }) => {
+  const ref = useRef<HTMLButtonElement>(null),
+    { setValue } = useFormContext();
   return (
     <Controller
       render={({ field: { onChange, value } }) => (
@@ -32,6 +34,10 @@ const Switch: FC<
             onCheckedChange={(checked) => {
               setClientValue(clientKey, checked);
               onChange(checked);
+              if (checked && excludeKey) {
+                setClientValue(excludeKey, false);
+                setValue(excludeKey, false);
+              }
             }}
             ref={ref}
           >
