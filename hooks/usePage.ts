@@ -1,11 +1,11 @@
 import { useValue } from "@/hooks/useValue.ts";
 
 const pages = [
-    "Invoiced From",
-    "Invoiced To",
-    "Invoice Reference",
-    "Payment Details",
-    "Invoice Items",
+    "From",
+    "To",
+    "Details",
+    "Payment",
+    "Items",
     "Review & Download",
   ],
   usePage = () => {

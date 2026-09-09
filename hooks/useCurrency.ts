@@ -1,6 +1,7 @@
 import { useValue } from "@/hooks/useValue.ts";
 import { flagToDataUri } from "@/lib/svg.ts";
-import { AU, EU, type FlagComponent, US } from "country-flag-icons/react/1x1";
+import { AU, EU, US } from "country-flag-icons/react/1x1";
+import { type JSX } from "react";
 
 const currencies: {
     name: string;
@@ -8,7 +9,7 @@ const currencies: {
     symbol: string;
     shortcode: string;
     flagDataUri: string;
-    Icon: FlagComponent;
+    Icon: (props: { className: string }) => JSX.Element;
   }[] = [
     {
       name: "Australian Dollar",
@@ -16,7 +17,7 @@ const currencies: {
       symbol: "$",
       shortcode: "AUD",
       flagDataUri: await flagToDataUri("AU"),
-      Icon: AU,
+      Icon: (props: { className: string }) => AU({ className: props.className + " rounded-full" }),
     },
     {
       name: "United States Dollar",
@@ -24,7 +25,7 @@ const currencies: {
       symbol: "$",
       shortcode: "USD",
       flagDataUri: await flagToDataUri("US"),
-      Icon: US,
+      Icon: (props: { className: string }) => US({ className: props.className + " rounded-full" }),
     },
     {
       name: "Euro",
@@ -32,7 +33,7 @@ const currencies: {
       symbol: "€",
       shortcode: "EUR",
       flagDataUri: await flagToDataUri("EU"),
-      Icon: EU,
+      Icon: (props: { className: string }) => EU({ className: props.className + " rounded-full" }),
     },
   ],
   useCurrency = (shortcode = useValue("currency")) => {

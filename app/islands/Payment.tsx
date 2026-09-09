@@ -4,7 +4,7 @@ import { Image, Link, Text, View } from "@react-pdf/renderer";
 import { format } from "date-fns";
 import React from "react";
 
-import { CurrencyInput } from "@/components/form/CurrencyInput.tsx";
+import { Select } from "@/components/form/Select.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import {
   Columns,
@@ -17,7 +17,7 @@ import {
   Title,
   Value,
 } from "@/components/Typography.tsx";
-import { useCurrency } from "@/hooks/useCurrency.ts";
+import { currencies, useCurrency } from "@/hooks/useCurrency.ts";
 import { useSvg } from "@/hooks/useSvg.ts";
 import { useInvoice, useValue } from "@/hooks/useValue.ts";
 import { calculateTotal, formatCurrencyValue } from "@/lib/utils.ts";
@@ -40,7 +40,7 @@ const Form: React.FC = () => (
       placeholder={format(new Date(), "yMMdd-01")}
       clientKey="paymentDescription"
     />
-    <CurrencyInput label="Currency" clientKey="currency" />
+    <Select label="Currency" clientKey="currency" values={currencies} />
     <TextInput
       label="URL"
       placeholder="https://checkout.stripe.com/..."
@@ -60,8 +60,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       paymentUrl,
       paymentReceipt,
       note,
-      isQuote,
-      isReceipt,
+      documentType,
     } = useInvoice(),
     currency = useCurrency(),
     total = calculateTotal(useValue("items"));
@@ -88,7 +87,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
           </Columns>
         </div>
       </Columns>
-      {!isQuote && !isReceipt && paymentUrl && (
+      {documentType === "INV" && paymentUrl && (
         <Columns className="grid-cols-4 pb-3">
           <Title className="pl-8 mb-0 mt-px">Pay Online</Title>
           <Value className="pr-8 col-span-3 underline truncate">
@@ -98,7 +97,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       )}
       <Columns className="pb-5">
         <div className="px-8">
-          {!isQuote && !isReceipt && (
+          {documentType === "INV" && (
             <>
               <Title>Payment Details</Title>
               <Columns className="mb-1">
@@ -128,7 +127,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
                 )}
             </>
           )}
-          {isReceipt && (
+          {documentType === "RCPT" && (
             <>
               <Title>Paid With</Title>
               {paymentReceipt
@@ -143,7 +142,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
           )}
         </div>
         <div className="px-8">
-          <Title>{isReceipt ? "Paid In" : "Payable In"}</Title>
+          <Title>{documentType === "RCPT" ? "Paid In" : "Payable In"}</Title>
           <div className="flex gap-2 justify-between items-center w-full">
             <div className="flex gap-3 items-center">
               <currency.Icon className="w-8 h-8 shrink-0 rounded-full" />
@@ -167,8 +166,7 @@ const PDF: React.FC = () => {
       paymentDescription,
       paymentUrl,
       paymentReceipt,
-      isQuote,
-      isReceipt,
+      documentType,
       note,
     } = useInvoice(),
     stripeDataUri = useSvg("stripe"),
@@ -211,7 +209,7 @@ const PDF: React.FC = () => {
         </View>
       </View>
       <View wrap={false} style={{ marginTop: 16 }}>
-        {!isQuote && !isReceipt && paymentUrl && (
+        {documentType === "INV" && paymentUrl && (
           <View
             style={{
               ...pdfStyles.columns,
@@ -248,7 +246,7 @@ const PDF: React.FC = () => {
           style={{ display: "flex", flexDirection: "row", paddingBottom: 20 }}
         >
           <View style={{ flex: 1, paddingHorizontal: 32 }}>
-            {!isQuote && !isReceipt && (
+            {documentType === "INV" && (
               <>
                 <Text style={pdfStyles.title}>Payment Details</Text>
                 {accountName && (
@@ -291,7 +289,7 @@ const PDF: React.FC = () => {
                 )}
               </>
             )}
-            {isReceipt && (
+            {documentType === "RCPT" && (
               <>
                 <Text style={pdfStyles.title}>Paid With</Text>
                 {paymentReceipt
@@ -315,7 +313,7 @@ const PDF: React.FC = () => {
             )}
           </View>
           <View style={{ flex: 1, paddingHorizontal: 32 }}>
-            <Text style={pdfStyles.title}>{isReceipt ? "Paid In" : "Payable In"}</Text>
+            <Text style={pdfStyles.title}>{documentType === "RCPT" ? "Paid In" : "Payable In"}</Text>
             <View style={pdfStyles.columns}>
               <Image
                 src={currency.flagDataUri}

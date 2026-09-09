@@ -6,7 +6,7 @@ import { useFormContext } from "react-hook-form";
 import * as From from "@/app/islands/From.tsx";
 import * as Items from "@/app/islands/Items.tsx";
 import * as Payment from "@/app/islands/Payment.tsx";
-import * as Reference from "@/app/islands/Reference.tsx";
+import * as Reference from "@/app/islands/Details.tsx";
 import * as To from "@/app/islands/To.tsx";
 import { Columns } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";

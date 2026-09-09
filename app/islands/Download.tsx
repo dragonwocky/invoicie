@@ -8,12 +8,12 @@ import { useEffect, useState } from "react";
 import * as From from "@/app/islands/From.tsx";
 import * as Items from "@/app/islands/Items.tsx";
 import * as Payment from "@/app/islands/Payment.tsx";
-import * as Reference from "@/app/islands/Reference.tsx";
+import * as Reference from "@/app/islands/Details.tsx";
 import * as To from "@/app/islands/To.tsx";
 import { Switch } from "@/components/form/Switch.tsx";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useDocumentType, useReference } from "@/hooks/useReference.ts";
+import { useDocumentType, useDocumentRef } from "@/hooks/useDocument.ts";
 import { useValue } from "@/hooks/useValue.ts";
 
 Font.register({
@@ -70,7 +70,7 @@ const Download = () => {
       <CheckCircle2 key={2} />,
       "Downloaded",
     ]][status],
-    reference = useReference();
+    reference = useDocumentRef();
   useEffect(() => {
     if (status === 2) setTimeout(() => setStatus(0), 1000);
   }, [status]);
@@ -80,8 +80,6 @@ const Download = () => {
       <p className="text-neutral-500 text-base font-medium mb-3">
         You're almost there! Please review entered details carefully before downloading.
       </p>
-      <Switch label="Issue a quote" clientKey="isQuote" excludeKey="isReceipt" />
-      <Switch label="Issue a receipt" clientKey="isReceipt" excludeKey="isQuote" />
       <Switch label="Split pages for print" clientKey="breakPages" />
       <Button
         title="Download"

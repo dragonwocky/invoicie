@@ -43,8 +43,8 @@ interface Invoice {
   toState?: string;
   toCountry?: string;
   toPostcode?: string;
-  customerCode?: string;
-  customerRef?: string;
+  toId?: string;
+  documentRef?: string;
   issueDate?: string;
   paymentDate?: string;
   dueDate?: string;
@@ -58,6 +58,5 @@ interface Invoice {
   note?: string;
   items?: Item[];
   breakPages?: boolean;
-  isQuote?: boolean;
-  isReceipt?: boolean;
+  documentType?: string;
 }

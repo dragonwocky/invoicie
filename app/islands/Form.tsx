@@ -8,7 +8,7 @@ import { Download } from "@/app/islands/Download.tsx";
 import * as From from "@/app/islands/From.tsx";
 import * as Items from "@/app/islands/Items.tsx";
 import * as Payment from "@/app/islands/Payment.tsx";
-import * as Reference from "@/app/islands/Reference.tsx";
+import * as Reference from "@/app/islands/Details.tsx";
 import * as To from "@/app/islands/To.tsx";
 import { Invoicie } from "@/components/Invoicie.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -84,7 +84,7 @@ const Export = () => {
         onClick={() => {
           const document = JSON.stringify(invoice),
             blob = new Blob([document], { type: "application/json" });
-          saveAs(blob, `${invoice.customerCode || "invoice"}.json`);
+          saveAs(blob, `${invoice.toId || "invoice"}.json`);
         }}
       >
         <DownloadIcon />
