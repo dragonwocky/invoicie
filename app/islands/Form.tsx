@@ -9,7 +9,7 @@ import * as To from "@/app/islands/To.tsx";
 import { Invoicie } from "@/components/Invoicie.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { setClientValue } from "@/hooks/useClientValue.ts";
-import { documentKeys, useDocument } from "@/hooks/useDocument.ts";
+import { documentKeys, useTemplate } from "@/hooks/useDocument.ts";
 import { usePage, usePageTitle } from "@/hooks/usePage.ts";
 import pkg from "@/package.json" with { type: "json" };
 import { saveAs } from "file-saver";
@@ -75,7 +75,7 @@ const PageBack = ({ fromPage }: { fromPage: number }) => {
   };
 
 const Export = () => {
-    const invoice = useDocument();
+    const invoice = useTemplate();
     return (
       <Button
         variant="ghost"
