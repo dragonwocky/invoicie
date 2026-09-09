@@ -46,7 +46,11 @@ const Form: React.FC = () => (
       placeholder="https://checkout.stripe.com/..."
       clientKey="paymentUrl"
     />
-    <TextInput label="Receipt" placeholder="D123456789012" clientKey="paymentReceipt" />
+    <TextInput
+      label="Receipt"
+      placeholder="D123456789012"
+      clientKey="paymentReceipt"
+    />
     <TextInput label="Note" placeholder="Add a note..." clientKey="note" />
   </>
 );
@@ -313,7 +317,9 @@ const PDF: React.FC = () => {
             )}
           </View>
           <View style={{ flex: 1, paddingHorizontal: 32 }}>
-            <Text style={pdfStyles.title}>{documentType === "RCPT" ? "Paid In" : "Payable In"}</Text>
+            <Text style={pdfStyles.title}>
+              {documentType === "RCPT" ? "Paid In" : "Payable In"}
+            </Text>
             <View style={pdfStyles.columns}>
               <Image
                 src={currency.flagDataUri}

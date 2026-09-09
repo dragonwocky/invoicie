@@ -23,7 +23,11 @@ const Form: React.FC = () => (
         { name: "Receipt", shortcode: "RCPT", Icon: ReceiptText },
       ]}
     />
-    <TextInput label="Document Reference" placeholder="01" clientKey="documentRef" />
+    <TextInput
+      label="Document Reference"
+      placeholder="01"
+      clientKey="documentRef"
+    />
     <DateInput label="Issue Date" clientKey="issueDate" />
     <DateInput label="Due Date" clientKey="dueDate" />
     <DateInput label="Payment Date" clientKey="paymentDate" />

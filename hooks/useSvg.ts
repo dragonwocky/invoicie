@@ -1,7 +1,7 @@
 import { svgToDataUri } from "@/lib/svg.ts";
 
 const stripeDataUri = globalThis.window
-  ? svgToDataUri(await fetch("/stripe.svg").then(res => res.text()))
+  ? svgToDataUri(await fetch("/stripe.svg").then((res) => res.text()))
   : "";
 
 const useSvg = (icon: "stripe") => {

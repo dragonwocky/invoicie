@@ -1,9 +1,8 @@
 "use client";
 
-import { Image, Text, View } from "@react-pdf/renderer";
-
 import { Columns, Frame, pdfStyles, Skeleton, Subtitle, Subvalue, Title, Value } from "@/components/Typography.tsx";
 import { useShapeStyle } from "@/hooks/useShape.ts";
+import { Image, Text, View } from "@react-pdf/renderer";
 
 const Preview: React.FC<Party & { onClick: () => void }> = ({
   title,

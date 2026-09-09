@@ -20,8 +20,8 @@ const useDocumentType = () => {
         && format(documentDate, "yyyyMMdd"),
         toId,
         documentRef,
-      ].filter(s => s).join("-")
+      ].filter((s) => s).join("-")
     }`;
   };
 
-export { useDocumentType, useDocumentRef };
+export { useDocumentRef, useDocumentType };

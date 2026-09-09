@@ -1,12 +1,11 @@
 "use client";
 
-import { CheckCircle2 } from "lucide-react";
-import { ReactNode, useState } from "react";
-import { Controller } from "react-hook-form";
-
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem } from "@/components/ui/command.tsx";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover.tsx";
 import { setClientValue, useClientValue } from "@/hooks/useClientValue.ts";
+import { CheckCircle2 } from "lucide-react";
+import { ReactNode, useState } from "react";
+import { Controller } from "react-hook-form";
 
 type SelectProps = {
   label?: string;
@@ -23,7 +22,7 @@ const Select = ({ label, values, clientKey }: SelectProps) => {
   return (
     <Controller
       render={({ field: { onChange, value } }) => {
-        const selected = values.find(v => v.shortcode === value) || values[0];
+        const selected = values.find((v) => v.shortcode === value) || values[0];
         return (
           <Popover onOpenChange={setOpen} open={open}>
             <PopoverTrigger className="flex w-full mb-6 pb-2 border-b-2 border-dashed transition-colors focus-within:border-primary">

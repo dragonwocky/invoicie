@@ -1,14 +1,10 @@
 "use client";
 
-import { DownloadIcon, FileJson2, MoveLeft, MoveRight, UploadIcon } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { Controller, useFormContext } from "react-hook-form";
-
+import * as Details from "@/app/islands/Details.tsx";
 import { Download } from "@/app/islands/Download.tsx";
 import * as From from "@/app/islands/From.tsx";
 import * as Items from "@/app/islands/Items.tsx";
 import * as Payment from "@/app/islands/Payment.tsx";
-import * as Reference from "@/app/islands/Details.tsx";
 import * as To from "@/app/islands/To.tsx";
 import { Invoicie } from "@/components/Invoicie.tsx";
 import { Button } from "@/components/ui/button.tsx";
@@ -17,6 +13,9 @@ import { usePage, usePageTitle } from "@/hooks/usePage.ts";
 import { invoiceKeys, useInvoice } from "@/hooks/useValue.ts";
 import pkg from "@/package.json" with { type: "json" };
 import { saveAs } from "file-saver";
+import { DownloadIcon, FileJson2, MoveLeft, MoveRight, UploadIcon } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useFormContext } from "react-hook-form";
 
 const PageBack = ({ fromPage }: { fromPage: number }) => {
     const pageTitle = usePageTitle(fromPage - 1);
@@ -156,12 +155,12 @@ const Form = () => {
           {usePageTitle()}
         </p>
         {[
-          <From.Form />,
-          <To.Form />,
-          <Reference.Form />,
-          <Payment.Form />,
-          <Items.Form />,
-          <Download />,
+          <From.Form key="From" />,
+          <To.Form key="To" />,
+          <Details.Form key="Details" />,
+          <Payment.Form key="Payment" />,
+          <Items.Form key="Items" />,
+          <Download key="Download" />,
         ][page]}
       </div>
       <div className="flex gap-9 justify-between">
