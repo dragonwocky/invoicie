@@ -18,8 +18,9 @@ import {
   Value,
 } from "@/components/Typography.tsx";
 import { currencies, useCurrency } from "@/hooks/useCurrency.ts";
+import { useDocument } from "@/hooks/useDocument.ts";
 import { useSvg } from "@/hooks/useSvg.ts";
-import { useInvoice, useValue } from "@/hooks/useValue.ts";
+import { useValue } from "@/hooks/useValue.ts";
 import { calculateTotal, formatCurrencyValue } from "@/lib/utils.ts";
 
 const Form: React.FC = () => (
@@ -65,7 +66,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       paymentReceipt,
       note,
       documentType,
-    } = useInvoice(),
+    } = useDocument(),
     currency = useCurrency(),
     total = calculateTotal(useValue("items"));
   return (
@@ -172,7 +173,7 @@ const PDF: React.FC = () => {
       paymentReceipt,
       documentType,
       note,
-    } = useInvoice(),
+    } = useDocument(),
     stripeDataUri = useSvg("stripe"),
     currency = useCurrency(),
     total = calculateTotal(useValue("items"));

@@ -8,8 +8,7 @@ import { DateInput } from "@/components/form/DateInput.tsx";
 import { Select } from "@/components/form/Select.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import { Columns, Frame, pdfBorder, pdfStyles, Skeleton, Title, Value } from "@/components/Typography.tsx";
-import { useDocumentRef, useDocumentType } from "@/hooks/useDocument.ts";
-import { useInvoice } from "@/hooks/useValue.ts";
+import { useDocument, useDocumentRef, useDocumentType } from "@/hooks/useDocument.ts";
 import { MessageSquareQuote, Receipt, ReceiptText } from "lucide-react";
 
 const Form: React.FC = () => (
@@ -41,7 +40,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
     dueDate,
     paymentDate,
     documentType,
-  } = useInvoice();
+  } = useDocument();
   return (
     <Columns
       className="group cursor-pointer relative py-4 border-b border-dashed"
@@ -89,7 +88,7 @@ const PDF: React.FC = () => {
     dueDate,
     paymentDate,
     documentType,
-  } = useInvoice();
+  } = useDocument();
   return (
     <View
       style={{

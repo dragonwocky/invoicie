@@ -9,11 +9,11 @@ import * as To from "@/app/islands/To.tsx";
 import { Invoicie } from "@/components/Invoicie.tsx";
 import { Button } from "@/components/ui/button.tsx";
 import { setClientValue } from "@/hooks/useClientValue.ts";
+import { documentKeys, useDocument } from "@/hooks/useDocument.ts";
 import { usePage, usePageTitle } from "@/hooks/usePage.ts";
-import { invoiceKeys, useInvoice } from "@/hooks/useValue.ts";
 import pkg from "@/package.json" with { type: "json" };
 import { saveAs } from "file-saver";
-import { DownloadIcon, FileJson2, MoveLeft, MoveRight, UploadIcon } from "lucide-react";
+import { DownloadIcon, FileJson2, MoveLeft, MoveRight, TrashIcon, UploadIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Controller, useFormContext } from "react-hook-form";
 
@@ -75,7 +75,7 @@ const PageBack = ({ fromPage }: { fromPage: number }) => {
   };
 
 const Export = () => {
-    const invoice = useInvoice();
+    const invoice = useDocument();
     return (
       <Button
         variant="ghost"
@@ -117,7 +117,7 @@ const Export = () => {
                 const json = reader.result as string,
                   data = JSON.parse(json);
                 for (const clientKey in data) {
-                  if (!invoiceKeys.includes(clientKey)) continue;
+                  if (!documentKeys.includes(clientKey)) continue;
                   setValue(clientKey, data[clientKey]);
                   setClientValue(clientKey, data[clientKey]);
                 }
@@ -128,6 +128,23 @@ const Export = () => {
             reader.readAsText(e.target.files[0]);
           }}
         />
+      </Button>
+    );
+  },
+  Reset = () => {
+    const { setValue } = useFormContext();
+    return (
+      <Button
+        variant="ghost"
+        className="h-auto p-2"
+        onClick={() => {
+          for (const clientKey of documentKeys) {
+            setValue(clientKey, "");
+            setClientValue(clientKey, "");
+          }
+        }}
+      >
+        <TrashIcon />
       </Button>
     );
   };
@@ -149,6 +166,7 @@ const Form = () => {
             <FileJson2 className="size-4 mr-1" />
             <Export />
             <Import />
+            <Reset />
           </div>
         </div>
         <p className="pt-8 text-2xl font-semibold pb-12 max-md:text-center">

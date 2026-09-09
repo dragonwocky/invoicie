@@ -20,7 +20,7 @@ interface Item {
   price?: number;
 }
 
-interface Invoice {
+interface Template {
   fromName?: string;
   fromEmail?: string;
   fromPhone?: string;
@@ -33,6 +33,7 @@ interface Invoice {
   fromPostcode?: string;
   fromABN?: string;
   toName?: string;
+  toId?: string;
   toEmail?: string;
   toPhone?: string;
   toDepartment?: string;
@@ -43,20 +44,22 @@ interface Invoice {
   toState?: string;
   toCountry?: string;
   toPostcode?: string;
-  toId?: string;
+  accountName?: string;
+  accountNumber?: string;
+  branchNumber?: string;
+  currency?: string;
+  breakPages?: boolean;
+}
+
+interface Document extends Template {
   documentRef?: string;
   issueDate?: string;
   paymentDate?: string;
   dueDate?: string;
-  accountName?: string;
-  accountNumber?: string;
-  branchNumber?: string;
   paymentDescription?: string;
   paymentUrl?: string;
   paymentReceipt?: string;
-  currency?: string;
   note?: string;
   items?: Item[];
-  breakPages?: boolean;
   documentType?: string;
 }

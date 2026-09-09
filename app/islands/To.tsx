@@ -3,7 +3,7 @@
 import * as Party from "@/app/islands/Party.tsx";
 import { ImageInput } from "@/components/form/ImageInput.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
-import { useInvoice } from "@/hooks/useValue.ts";
+import { useDocument } from "@/hooks/useDocument.ts";
 import { View } from "@react-pdf/renderer";
 
 const Form = () => (
@@ -47,7 +47,7 @@ const Preview: React.FC<{ onClick: () => void }> = ({ onClick }) => {
     toState,
     toCountry,
     toPostcode,
-  } = useInvoice();
+  } = useDocument();
   return (
     <Party.Preview
       title="To"
@@ -80,7 +80,7 @@ const PDF: React.FC = () => {
     toState,
     toCountry,
     toPostcode,
-  } = useInvoice();
+  } = useDocument();
   return (
     <View style={{ flex: 1 }}>
       <Party.PDF
