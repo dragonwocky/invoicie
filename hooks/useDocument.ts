@@ -63,7 +63,7 @@ const documentKeys = [
     if (documentType === "RCPT") return "Receipt";
     return "Quote";
   },
-  useDocumentRef = () => {
+  useDocumentName = () => {
     const documentType = useValue("documentType"),
       issueDate = useValue<string>("issueDate"),
       paymentDate = useValue<string>("paymentDate"),
@@ -74,10 +74,10 @@ const documentKeys = [
       [
         documentDate
         && format(documentDate, "yyyyMMdd"),
-        toId,
         documentRef,
+        toId,
       ].filter((s) => s).join("-")
     }`;
   };
 
-export { documentKeys, useDocument, useDocumentRef, useDocumentType, useTemplate };
+export { documentKeys, useDocument, useDocumentName, useDocumentType, useTemplate };

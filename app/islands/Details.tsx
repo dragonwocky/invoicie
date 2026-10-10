@@ -8,7 +8,7 @@ import { DateInput } from "@/components/form/DateInput.tsx";
 import { Select } from "@/components/form/Select.tsx";
 import { TextInput } from "@/components/form/TextInput.tsx";
 import { Columns, Frame, pdfBorder, pdfStyles, Skeleton, Title, Value } from "@/components/Typography.tsx";
-import { useDocument, useDocumentRef, useDocumentType } from "@/hooks/useDocument.ts";
+import { useDocument, useDocumentName, useDocumentType } from "@/hooks/useDocument.ts";
 import { MessageSquareQuote, Receipt, ReceiptText } from "lucide-react";
 
 const Form: React.FC = () => (
@@ -50,7 +50,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       <div className="px-8">
         <Title>{useDocumentType()} No</Title>
         {documentRef
-          ? <Value>{useDocumentRef()}</Value>
+          ? <Value>{useDocumentName()}</Value>
           : <Skeleton className="h-4 w-full" />}
       </div>
       <Columns className="px-8">
@@ -99,7 +99,7 @@ const PDF: React.FC = () => {
     >
       <View style={{ flex: 1, paddingHorizontal: 32 }}>
         <Text style={pdfStyles.title}>{useDocumentType()} No</Text>
-        {documentRef && <Text style={pdfStyles.value}>{useDocumentRef()}</Text>}
+        {documentRef && <Text style={pdfStyles.value}>{useDocumentName()}</Text>}
       </View>
       <View style={{ ...pdfStyles.columns, flex: 1, paddingHorizontal: 32 }}>
         <View style={{ flex: 1, marginRight: 8 }}>

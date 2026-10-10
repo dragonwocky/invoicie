@@ -13,7 +13,7 @@ import * as To from "@/app/islands/To.tsx";
 import { Switch } from "@/components/form/Switch.tsx";
 import { pdfBorder, pdfStyles } from "@/components/Typography.tsx";
 import { Button } from "@/components/ui/button.tsx";
-import { useDocumentRef, useDocumentType } from "@/hooks/useDocument.ts";
+import { useDocumentName, useDocumentType } from "@/hooks/useDocument.ts";
 import { useValue } from "@/hooks/useValue.ts";
 
 Font.register({
@@ -70,7 +70,7 @@ const Download = () => {
       <CheckCircle2 key={2} />,
       "Downloaded",
     ]][status],
-    reference = useDocumentRef();
+    reference = useDocumentName();
   useEffect(() => {
     if (status === 2) setTimeout(() => setStatus(0), 1000);
   }, [status]);
