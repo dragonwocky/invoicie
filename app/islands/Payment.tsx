@@ -327,7 +327,7 @@ const PDF: React.FC = () => {
                 style={{
                   width: 32,
                   height: 32,
-                  borderRadius: "100%",
+                  borderRadius: 999,
                   objectFit: "cover",
                   marginRight: 8,
                 }}
