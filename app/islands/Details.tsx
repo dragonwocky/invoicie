@@ -55,7 +55,7 @@ const Preview: React.FC<{ onClick?: () => void }> = ({ onClick }) => {
       </div>
       <Columns className="px-8">
         <div className="mr-2">
-          <Title>{documentType === "RCPT" ? "Issued" : "Invoiced"}</Title>
+          <Title>Issued</Title>
           {issueDate
             ? <Value>{format(issueDate, "do MMM yyyy")}</Value>
             : <Skeleton className="h-4 w-full" />}
